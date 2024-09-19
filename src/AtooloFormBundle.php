@@ -30,5 +30,6 @@ class AtooloFormBundle extends AbstractBundle
         );
 
         $loader->load('services.yaml');
+        $loader->load('rate_limiter.yaml');
     }
 }

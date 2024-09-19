@@ -74,6 +74,8 @@ class FormController extends AbstractController
         $formDefinition = $this->loadDefinition($lang, $location, $component);
 
         $defaultProcessors = [
+            'ip-limiter' =>  new SubmitProcessorOptions(),
+            'submit-limiter' =>  new SubmitProcessorOptions(),
             'json-schema-validator' => new SubmitProcessorOptions(),
         ];
 

@@ -12,6 +12,10 @@ class SpamDetector implements SubmitProcessor
 {
     public function process(FormSubmission $submission, SubmitProcessorOptions $options): FormSubmission
     {
+        if ($submission->approved) {
+            return $submission;
+        }
+
         return $submission;
     }
 }

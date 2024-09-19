@@ -6,6 +6,8 @@ namespace Atoolo\Form\Dto;
 
 class FormSubmission
 {
+    public bool $approved = false;
+
     /**
      * @param array<string, mixed> $data
      * @param array<string, mixed> $processors
