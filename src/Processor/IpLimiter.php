@@ -9,12 +9,12 @@ use Atoolo\Form\Exception\LimitExceededException;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 
-#[AsTaggedItem(index: 'ip-limiter')]
+#[AsTaggedItem(index: 'ip-limiter', priority: 80)]
 class IpLimiter implements SubmitProcessor
 {
     public function __construct(private readonly RateLimiterFactory $formSubmitByIpLimiter) {}
 
-    public function process(FormSubmission $submission, SubmitProcessorOptions $options): FormSubmission
+    public function process(FormSubmission $submission, array $options): FormSubmission
     {
         if ($submission->approved) {
             return $submission;

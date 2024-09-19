@@ -92,26 +92,38 @@ class FormDefinitionLoader
         );
     }
 
-    private function transformProcessorConfig(array $deliverer): Options
+    private function transformProcessorConfig(array $deliverer): array
     {
         $from = [];
         foreach ($deliverer['from'] ?? [] as $address => $name) {
-            $from[] = new Address($address, $name);
+            $from[] = ['address' => $address, 'name' => $name];
         }
 
         $to = [];
         foreach ($deliverer['to'] ?? [] as $address => $name) {
-            $to[] =new Address($address, $name);
+            $to[] = ['address' => $address, 'name' => $name];
         }
 
-        return new Options(
-            $from,
-            $to,
-            $deliverer['subject'] ?? '',
-            $deliverer['format'] ?? 'html',
-            $deliverer['attachCsv'] ?? false,
-            $deliverer['showEmpty'] ?? false,
-        );
+        $cc = [];
+        foreach ($deliverer['cc'] ?? [] as $address => $name) {
+            $cc[] = ['address' => $address, 'name' => $name];
+        }
+
+        $bcc = [];
+        foreach ($deliverer['bcc'] ?? [] as $address => $name) {
+            $bcc[] = ['address' => $address, 'name' => $name];
+        }
+
+        return [
+            'from' => $from,
+            'to' => $to,
+            'cc' => $cc,
+            'bcc' => $bcc,
+            'subject' => $deliverer['subject'] ?? '',
+            'format' => $deliverer['format'] ?? 'html',
+            'attachCsv' => $deliverer['attachCsv'] ?? false,
+            'showEmpty' => $deliverer['showEmpty'] ?? false,
+        ];
     }
 
     private function deserializeUiSchema(array $data): Layout

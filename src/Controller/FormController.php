@@ -73,19 +73,10 @@ class FormController extends AbstractController
 
         $formDefinition = $this->loadDefinition($lang, $location, $component);
 
-        $defaultProcessors = [
-            'ip-limiter' =>  new SubmitProcessorOptions(),
-            'submit-limiter' =>  new SubmitProcessorOptions(),
-            'json-schema-validator' => new SubmitProcessorOptions(),
-        ];
-
-        $processors = array_merge($defaultProcessors, $formDefinition->processors);
-
         $submission = new FormSubmission(
             $request->getClientIp(),
             $formDefinition,
             $data,
-            $processors,
         );
 
         $this->submitHandler->handle($submission);

@@ -8,12 +8,12 @@ use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
-#[AsTaggedItem(index: 'ip-blocker')]
+#[AsTaggedItem(index: 'ip-blocker', priority: 90)]
 class IpBlocker implements SubmitProcessor
 {
     private array $blockedIps = [];
 
-    public function process(FormSubmission $submission, SubmitProcessorOptions $options): FormSubmission
+    public function process(FormSubmission $submission, array $options): FormSubmission
     {
         if ($submission->approved) {
             return $submission;

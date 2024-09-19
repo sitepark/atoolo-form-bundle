@@ -16,6 +16,5 @@ class FormSubmission
         public readonly string $remoteAddress,
         public readonly FormDefinition $formDefinition,
         public readonly \stdClass $data,
-        public readonly array $processors,
     ) {}
 }

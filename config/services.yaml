@@ -1,3 +1,9 @@
+parameters:
+    atoolo_form_default_processors:
+      'ip-limiter': ~
+      'submit-limiter': ~
+      'json-schema-validator': ~
+
 services:
 
   # default configuration for services in *this* file
