@@ -77,9 +77,16 @@ class JsonSchemaValidator
         $formatter = new ErrorFormatter();
         $errors = $formatter->format($validationError, false, function (ValidationError $error) use ($formatter) {
             $schema = $error->schema()->info();
+
+            $path = $schema->path();
+            $args = $error->args();
+            if (isset($args['missing'][0])) {
+                $path[] = $args['missing'][0];
+            }
+
             return [
                 'message' => $formatter->formatErrorMessage($error),
-                'pointer' => JsonPointer::pathToFragment($schema->path()),
+                'path' => implode('/', $path),
                 'args' => $error->args(),
                 'constraint' => $error->keyword(),
             ];
@@ -91,7 +98,7 @@ class JsonSchemaValidator
                 null,
                 $error['args'],
                 null,
-                $error['pointer'],
+                $error['path'],
                 '',
                 null,
                 null,

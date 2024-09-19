@@ -14,7 +14,6 @@ class JsonSchemaValidator implements SubmitProcessor
     public function __construct(private readonly \Atoolo\Form\Service\JsonSchemaValidator $validator) {}
 
     /**
-     * @param array<string,mixed> $options
      * @throws ValidationFailedException
      */
     public function process(FormSubmission $submission, SubmitProcessorOptions $options): FormSubmission

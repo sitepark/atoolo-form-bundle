@@ -10,9 +10,6 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 #[AsTaggedItem(index: 'ip-blocker')]
 class IpBlocker implements SubmitProcessor
 {
-    /**
-     * @param array<string,mixed> $options
-     */
     public function process(FormSubmission $submission, SubmitProcessorOptions $options): FormSubmission
     {
         return $submission;

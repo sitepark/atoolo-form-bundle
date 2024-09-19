@@ -103,7 +103,7 @@ class FormDefinitionLoaderTest extends TestCase
 
         $loader = new FormDefinitionLoader($resourceLoader);
 
-        $definition = $loader->load(ResourceLocation::of('/test.php'), 'formEditor-1');
+        $definition = $loader->loadFromResource(ResourceLocation::of('/test.php'), 'formEditor-1');
         print_r($definition);
     }
 }

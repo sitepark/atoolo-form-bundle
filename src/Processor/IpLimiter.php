@@ -10,9 +10,6 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 #[AsTaggedItem(index: 'ip-limiter')]
 class IpLimiter implements SubmitProcessor
 {
-    /**
-     * @param array<string,mixed> $options
-     */
     public function process(FormSubmission $submission, SubmitProcessorOptions $options): FormSubmission
     {
         return $submission;

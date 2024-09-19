@@ -116,7 +116,7 @@ class FormController extends AbstractController
     {
         $location = $this->toResourceLocation($lang, $path);
         try {
-            return $this->formDefinitionLoader->load($location, $component);
+            return $this->formDefinitionLoader->loadFromResource($location, $component);
         } catch (ResourceNotFoundException $e) {
             throw new NotFoundHttpException('Resource \'' . $location . '\' not found');
         } catch (FormNotFoundException $e) {

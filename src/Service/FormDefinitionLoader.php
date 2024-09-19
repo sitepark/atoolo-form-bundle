@@ -30,7 +30,7 @@ class FormDefinitionLoader
         private readonly LabelTranslator $translator,
     ) {}
 
-    public function load(ResourceLocation $location, string $component): FormDefinition
+    public function loadFromResource(ResourceLocation $location, string $component): FormDefinition
     {
         $resource = $this->resourceLoader->load($location);
 
@@ -40,11 +40,16 @@ class FormDefinitionLoader
             throw new FormNotFoundException('Component \'' . $component . '\' not found');
         }
 
-        if (!isset($componentConfig['model']['jsonForms'])) {
+        return $this->loadFromModel($component, $componentConfig['model'] ?? []);
+    }
+
+    public function loadFromModel(string $component, array $model): FormDefinition
+    {
+        if (!isset($model['jsonForms'])) {
             throw new InvalidFormConfiguration('Missing jsonForms definition in component \'' . $component . '\'');
         }
 
-        $jsonForms = $componentConfig['model']['jsonForms'];
+        $jsonForms = $model['jsonForms'];
 
         if (!isset($jsonForms['schema'])) {
             throw new InvalidFormConfiguration('Missing jsonForms.schema definition in component \'' . $component . '\'');
@@ -54,21 +59,21 @@ class FormDefinitionLoader
         }
 
         $buttons = [];
-        foreach ($componentConfig['model']['bottomBar']['items'] ?? [] as $button) {
+        foreach ($model['bottomBar']['items'] ?? [] as $button) {
             $buttons[$button['value']] = $button['label'];
         }
 
-        $messages = $componentConfig['model']['messages'] ?? [];
+        $messages = $model['messages'] ?? [];
 
-        if (!isset($componentConfig['model']['deliverer']['modelType'])) {
+        if (!isset($model['deliverer']['modelType'])) {
             throw new InvalidFormConfiguration('Missing deliverer definition in component \'' . $component . '\'');
         }
 
-        if ($componentConfig['model']['deliverer']['modelType'] !== 'content.form.deliverer.email') {
-            throw new InvalidFormConfiguration('Unsupported deliverer \'' . $componentConfig['model']['deliverer']['modelType'] . '\' in component \'' . $component . '\'');
+        if ($model['deliverer']['modelType'] !== 'content.form.deliverer.email') {
+            throw new InvalidFormConfiguration('Unsupported deliverer \'' . $model['deliverer']['modelType'] . '\' in component \'' . $component . '\'');
         }
 
-        $deliverer = $componentConfig['model']['deliverer'];
+        $deliverer = $model['deliverer'];
         $processor = [
             'email-sender' => $this->transformProcessorConfig($deliverer),
         ];

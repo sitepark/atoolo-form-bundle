@@ -13,9 +13,5 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('atoolo_form.processor')]
 interface SubmitProcessor
 {
-    /**
-     * @template E of T
-     * @param E $options
-     */
     public function process(FormSubmission $submission, SubmitProcessorOptions $options): FormSubmission;
 }
