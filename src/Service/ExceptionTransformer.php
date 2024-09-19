@@ -27,19 +27,19 @@ class ExceptionTransformer implements ExceptionTransformerInterface
 
         if ($exception instanceof LimitExceededException) {
             return new HttpApiProblem(Response::HTTP_TOO_MANY_REQUESTS, [
-                'details' => 'The limit has been reached. The request can be repeated at a later time',
+                'detail' => 'The limit has been reached. The request can be repeated at a later time',
             ]);
         }
 
         if ($exception instanceof AccessDeniedException) {
             return new HttpApiProblem(Response::HTTP_FORBIDDEN, [
-                'details' => 'Access was denied',
+                'detail' => 'Access was denied',
             ]);
         }
 
         if ($exception instanceof SpamDetectedException) {
             return new HttpApiProblem(Response::HTTP_UNPROCESSABLE_ENTITY, [
-                'details' => 'Spam detected',
+                'detail' => 'Spam detected',
             ]);
         }
 
