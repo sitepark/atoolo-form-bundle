@@ -41,7 +41,7 @@ class FormDataModelFactoryTest extends TestCase
                 'text.txt',
                 'text/plain',
                 'text',
-                4
+                4,
             ));
         $this->formDataModelFactory = new FormDataModelFactory($this->dataUrlParser);
     }
@@ -58,7 +58,8 @@ class FormDataModelFactoryTest extends TestCase
     }
 
     #[DataProvider('loadTextures')]
-    public function testCreate(array $texture): void {
+    public function testCreate(array $texture): void
+    {
 
         $schema = $texture['schema'];
         $uischema = $texture['uischema'];

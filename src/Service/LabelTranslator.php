@@ -8,7 +8,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LabelTranslator
 {
-
     public function __construct(
         private readonly TranslatorInterface $translator,
     ) {}

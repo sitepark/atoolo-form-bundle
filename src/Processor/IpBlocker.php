@@ -14,7 +14,7 @@ class IpBlocker implements SubmitProcessor
 {
     public function __construct(
         #[Autowire(param: 'atoolo_form.processor.ip_blocker.blocked_ips')]
-        private readonly array $blockedIps
+        private readonly array $blockedIps,
     ) {}
 
     public function process(FormSubmission $submission, array $options): FormSubmission

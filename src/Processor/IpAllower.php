@@ -13,7 +13,7 @@ class IpAllower implements SubmitProcessor
 {
     public function __construct(
         #[Autowire(param: 'atoolo_form.processor.ip_allower.allowed_ips')]
-        private readonly array $allowedIps
+        private readonly array $allowedIps,
     ) {}
 
     public function process(FormSubmission $submission, array $options): FormSubmission

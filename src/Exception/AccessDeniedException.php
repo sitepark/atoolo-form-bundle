@@ -6,7 +6,6 @@ namespace Atoolo\Form\Exception;
 
 use RuntimeException;
 
-
 /**
  * @codeCoverageIgnore
  */

@@ -103,7 +103,6 @@ class JsonSchemaValidator
         });
         foreach ($errors as $error) {
             $v = new ConstraintViolation(
-
                 $error['message'],
                 null,
                 $error['args'],

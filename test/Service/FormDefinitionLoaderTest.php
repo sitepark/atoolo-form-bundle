@@ -111,7 +111,7 @@ class FormDefinitionLoaderTest extends TestCase
                     "jsonForms" => [
                         "schema" => [],
                         "uischema" => [],
-                    ]
+                    ],
                 ],
             ]],
         ]);

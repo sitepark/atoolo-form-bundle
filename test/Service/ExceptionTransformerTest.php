@@ -47,8 +47,7 @@ class ExceptionTransformerTest extends TestCase
         string $exceptionClass,
         string $transformedClass,
         bool $accepted = true,
-    ): void
-    {
+    ): void {
         /** @var Throwable $exception */
         $exception = $this->createStub($exceptionClass);
 

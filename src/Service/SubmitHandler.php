@@ -11,7 +11,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class SubmitHandler
 {
-
     /**
      * @var array<string, SubmitProcessor>
      */

@@ -9,7 +9,6 @@ use stdClass;
 
 class HtmlConstraint implements FormatConstraint
 {
-
     public function getType(): string
     {
         return 'string';

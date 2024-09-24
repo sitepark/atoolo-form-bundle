@@ -8,7 +8,6 @@ use stdClass;
 
 class PhoneConstraint implements FormatConstraint
 {
-
     public function getType(): string
     {
         return 'string';

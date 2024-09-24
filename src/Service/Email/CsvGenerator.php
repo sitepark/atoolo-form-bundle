@@ -10,7 +10,6 @@ use League\Csv\Writer;
 
 class CsvGenerator
 {
-
     /**
      * @throws CannotInsertRecord
      * @throws Exception
