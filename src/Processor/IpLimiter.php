@@ -14,6 +14,9 @@ class IpLimiter implements SubmitProcessor
 {
     public function __construct(private readonly RateLimiterFactory $formSubmitByIpLimiter) {}
 
+    /**
+     * @param array<string,mixed> $options
+     */
     public function process(FormSubmission $submission, array $options): FormSubmission
     {
         if ($submission->approved) {

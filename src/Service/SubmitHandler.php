@@ -18,7 +18,8 @@ class SubmitHandler
 
 
     /**
-     * @param array<SubmitProcessor> $processors
+     * @param iterable<SubmitProcessor> $processors
+     * @param array<string, ?array<string, mixed>> $defaultProcessorKeys
      */
     public function __construct(
         #[AutowireIterator('atoolo_form.processor', indexAttribute: 'key')]
@@ -33,7 +34,7 @@ class SubmitHandler
 
     public function handle(FormSubmission $submit): void
     {
-        $processorsOptions = $this->getResultingOptions($submit->formDefinition->processors);
+        $processorsOptions = $this->getResultingOptions($submit->formDefinition->processors ?? []);
 
         foreach ($this->processors as $key => $processor) {
 
@@ -47,6 +48,10 @@ class SubmitHandler
         }
     }
 
+    /**
+     * @param array<string, array<string,mixed>> $processors
+     * @return array<string, array<string,mixed>>
+     */
     private function getResultingOptions(array $processors): array
     {
         $resultingProcessors = [];

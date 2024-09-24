@@ -10,5 +10,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('atoolo_form.processor')]
 interface SubmitProcessor
 {
+    /**
+     * @param array<string,mixed> $options
+     */
     public function process(FormSubmission $submission, array $options): FormSubmission;
 }

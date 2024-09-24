@@ -18,6 +18,7 @@ class EmailHtmlMessageTwigMjmlRenderer implements EmailHtmlMessageRenderer
     ) {}
 
     /**
+     * @param EmailMessageModel $model
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError

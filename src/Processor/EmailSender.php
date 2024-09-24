@@ -8,6 +8,7 @@ use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Service\Email\CsvGenerator;
 use Atoolo\Form\Service\Email\EmailHtmlMessageRenderer;
 use Atoolo\Form\Service\Email\EmailMessageModelFactory;
+use League\Csv\Exception;
 use Soundasleep\Html2Text;
 use Soundasleep\Html2TextException;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
@@ -16,9 +17,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-/**
- * @implements SubmitProcessor
- */
 #[AsTaggedItem(index: 'email-sender', priority: 10)]
 class EmailSender implements SubmitProcessor
 {
@@ -30,8 +28,19 @@ class EmailSender implements SubmitProcessor
     ) {}
 
     /**
+     * @param array{
+     *     from: array<array{address: string, name: string}>,
+     *     to: array<array{address: string, name: string}>,
+     *     cc?: array<array{address: string, name: string}>,
+     *     bcc?: array<array{address: string, name: string}>,
+     *     subject?: string,
+     *     format?: 'html'|'text',
+     *     showEmpty?: bool,
+     *     attachCsv?: bool,
+     * } $options
      * @throws Html2TextException
      * @throws TransportExceptionInterface
+     * @throws Exception
      */
     public function process(FormSubmission $submission, array $options): FormSubmission
     {
@@ -62,7 +71,7 @@ class EmailSender implements SubmitProcessor
         $email->text($text);
 
         foreach ($result->attachments as $attachment) {
-            $email->attach($attachment->data, $attachment->filename, $attachment->contentType);
+            $email->attach($attachment['data'], $attachment['filename'], $attachment['contentType']);
         }
 
         if ($options['attachCsv'] ?? false) {

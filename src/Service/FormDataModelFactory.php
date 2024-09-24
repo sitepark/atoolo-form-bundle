@@ -10,8 +10,14 @@ use Atoolo\Form\Dto\UISchema\Layout;
 
 class FormDataModelFactory implements FromReaderHandler
 {
+    /**
+     * @var array<EmailMessageModelItem>
+     */
     private array $items = [];
 
+    /**
+     * @var array<EmailMessageModelItem|array<EmailMessageModelItem>>
+     */
     private array $stack = [];
 
     private bool $includeEmptyFields = false;
@@ -20,6 +26,10 @@ class FormDataModelFactory implements FromReaderHandler
         private readonly DataUrlParser $dataUrlParser,
     ) {}
 
+    /**
+     * @param array<string,mixed> $data
+     * @return array<EmailMessageModelItem>
+     */
     public function create(FormDefinition $definition, array $data, bool $includeEmptyFields): array
     {
         $this->stack = [];
@@ -48,14 +58,28 @@ class FormDataModelFactory implements FromReaderHandler
 
     public function endLayout(Layout $layout): void
     {
+        /** @var EmailMessageModelItem $data */
         $data = array_pop($this->stack);
         $data['items'] = $this->items;
-        $this->items = array_pop($this->stack);
+        /** @var array<EmailMessageModelItem> $item */
+        $item = array_pop($this->stack);
+        $this->items = $item;
         $this->items[] = $data;
     }
 
-    public function control(Control $control, array $schema, string $name, mixed $value): void
-    {
+    /**
+     * @param Control $control
+     * @param JsonSchema $schema
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function control(
+        Control $control,
+        array $schema,
+        string $name,
+        mixed $value,
+    ): void {
         if (empty($value)) {
             if (!$this->includeEmptyFields) {
                 return;
@@ -65,7 +89,9 @@ class FormDataModelFactory implements FromReaderHandler
 
         $type = $this->identifyType($control, $schema);
         if ($type === 'file' && !empty($value)) {
+            /** @var string $value */
             $uploadFile = $this->dataUrlParser->parse($value);
+            /** @var EmailMessageModelFileUpload $value */
             $value = get_object_vars($uploadFile);
         }
 
@@ -88,7 +114,7 @@ class FormDataModelFactory implements FromReaderHandler
                     $value[] = $label;
                 }
             }
-            if ($schema['type'] === 'string') {
+            if (($schema['type'] ?? '') === 'string') {
                 $value = $value[0] ?? '';
             }
         }
@@ -113,6 +139,9 @@ class FormDataModelFactory implements FromReaderHandler
         $this->items[] = $item;
     }
 
+    /**
+     * @param JsonSchema $schema
+     */
     private function identifyType(Control $control, array $schema): string
     {
 

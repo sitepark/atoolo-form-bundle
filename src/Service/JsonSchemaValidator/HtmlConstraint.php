@@ -24,6 +24,10 @@ class HtmlConstraint implements FormatConstraint
      */
     public function check(mixed $value, stdClass $schema): bool
     {
+        if (!is_string($value)) {
+            throw new CustomError('Value is not a string');
+        }
+
         if (isset($schema->allowedElements)) {
             $stripped = strip_tags($value, $schema->allowedElements);
             if ($stripped !== $value) {

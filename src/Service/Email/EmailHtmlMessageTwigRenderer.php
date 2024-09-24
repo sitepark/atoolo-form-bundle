@@ -17,6 +17,7 @@ class EmailHtmlMessageTwigRenderer implements EmailHtmlMessageRenderer
     ) {}
 
     /**
+     * @param EmailMessageModel $model
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
@@ -32,13 +33,20 @@ class EmailHtmlMessageTwigRenderer implements EmailHtmlMessageRenderer
         );
     }
 
+    /**
+     * @param array<EmailMessageModelItem> $model
+     * @return array<EmailMessageModelFileUpload>
+     */
     private function findAttachments(array $model): array
     {
         $attachments = [];
         foreach ($model as $item) {
             $type = $item['type'] ?? '';
             if ($type === 'file') {
-                $attachments[] = $item['value'];
+                /** @var EmailMessageModelControlItem $item */
+                /** @var EmailMessageModelFileUpload $value */
+                $value = $item['value'];
+                $attachments[] = $value;
             }
         }
 

@@ -11,6 +11,9 @@ use League\Csv\Writer;
 class CsvGenerator
 {
     /**
+     * @param array{
+     *     items: ?array<EmailMessageModelItem>,
+     * } $model
      * @throws CannotInsertRecord
      * @throws Exception
      */
@@ -22,14 +25,20 @@ class CsvGenerator
         return $csv->toString();
     }
 
+    /**
+     * @param array<EmailMessageModelItem> $items
+     * @return array<string>
+     */
     private function collect(array $items, string $field): array
     {
         $data = [];
         foreach ($items as $item) {
             if ($item['layout'] ?? false) {
+                /** @var EmailMessageModelLayoutItem $item */
                 $data[] = $this->collect($item['items'] ?? [], $field);
                 continue;
             }
+            /** @var array<string,string|array<string>> $item */
             $value = $item[$field] ?? '';
             if (is_array($value)) {
                 $value = implode(', ', $value);

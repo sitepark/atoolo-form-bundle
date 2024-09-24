@@ -19,6 +19,11 @@ class EmailMessageModelFactory
         private readonly Platform $platform,
     ) {}
 
+    /**
+     * @param FormSubmission $submission
+     * @param bool $includeEmptyFields
+     * @return EmailMessageModel
+     */
     public function create(FormSubmission $submission, bool $includeEmptyFields): array
     {
         $items = $this->formDataModelFactory->create(

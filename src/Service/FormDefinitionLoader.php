@@ -21,6 +21,64 @@ use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @phpstan-type DelivererModel = array{
+ *     modelType?: string,
+ *     from?: array<string,string>,
+ *     to?: array<string,string>,
+ *     cc?: array<string,string>,
+ *     bcc?: array<string,string>,
+ *     subject?: string,
+ *     format?: string,
+ *     attachCsv?: bool,
+ *     showEmpty?: bool
+ * }
+ * @phpstan-type FormEditorModel = array{
+ *     jsonForms?: array{
+ *         schema?: JsonSchema,
+ *         uischema?: array<string,mixed>
+ *     },
+ *     bottomBar?: array{
+ *         items?: array<array{
+ *             value: string,
+ *             label: string,
+ *         }>,
+ *     },
+ *     messages?: array<string, array{
+ *         headline: string,
+ *         text: string,
+ *     }>,
+ *     deliverer?: DelivererModel,
+ * }
+ * @phpstan-type FormEditorComponent = array{
+ *     id: string,
+ *     type: string,
+ *     model?: FormEditorModel,
+ *     items?: array<string, mixed>,
+ * }
+ * @phpstan-type DelivererConfig = array{
+ *      from: array<array{
+ *          address: string,
+ *          name: string,
+ *      }>,
+ *      to: array<array{
+ *          address: string,
+ *          name: string,
+ *      }>,
+ *      cc: array<array{
+ *          address: string,
+ *          name: string,
+ *      }>,
+ *      bcc: array<array{
+ *          address: string,
+ *          name: string,
+ *      }>,
+ *      subject: string,
+ *      format: string,
+ *      attachCsv: bool,
+ *      showEmpty: bool
+ *  }
+ */
 class FormDefinitionLoader
 {
     public function __construct(
@@ -33,15 +91,24 @@ class FormDefinitionLoader
     {
         $resource = $this->resourceLoader->load($location);
 
-        $componentConfig = $this->findFormEditorComponent($resource->data->getArray('content.items'), $component);
+        /** @var array<FormEditorComponent> $items */
+        $items = $resource->data->getArray('content.items');
+        $componentConfig = $this->findFormEditorComponent($items, $component);
 
         if (empty($componentConfig)) {
             throw new FormNotFoundException('Component \'' . $component . '\' not found');
         }
 
-        return $this->loadFromModel($component, $componentConfig['model'] ?? []);
+        /** @var FormEditorModel $model */
+        $model = $componentConfig['model'] ?? [];
+        return $this->loadFromModel($component, $model);
     }
 
+    /**
+     * @param string $component
+     * @param FormEditorModel $model
+     * @return FormDefinition
+     */
     public function loadFromModel(string $component, array $model): FormDefinition
     {
         if (!isset($model['jsonForms'])) {
@@ -77,6 +144,7 @@ class FormDefinitionLoader
             'email-sender' => $this->transformProcessorConfig($deliverer),
         ];
 
+        /** @var JsonSchema $schema */
         $schema = $this->translator->translate($jsonForms['schema'], ['label', 'title']);
         $uiSchema = $this->translator->translate($jsonForms['uischema'], ['label']);
 
@@ -91,6 +159,10 @@ class FormDefinitionLoader
         );
     }
 
+    /**
+     * @param DelivererModel $deliverer
+     * @return DelivererConfig
+     */
     private function transformProcessorConfig(array $deliverer): array
     {
         $from = [];
@@ -125,6 +197,11 @@ class FormDefinitionLoader
         ];
     }
 
+
+    /**
+     * @param array<string,mixed> $data
+     * @return Layout
+     */
     private function deserializeUiSchema(array $data): Layout
     {
         $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
@@ -136,20 +213,27 @@ class FormDefinitionLoader
             propertyTypeExtractor: new PhpDocExtractor(),
             classDiscriminatorResolver: $discriminator,
         )];
-        return (new Serializer($normalizers, $encoders))->denormalize($data, Layout::class);
+        /** @var Layout $layout */
+        $layout = (new Serializer($normalizers, $encoders))->denormalize($data, Layout::class);
+        return $layout;
     }
 
+    /**
+     * @param array<FormEditorComponent> $items
+     * @param string $component
+     * @return FormEditorComponent|array<void>
+     */
     private function findFormEditorComponent(array $items, string $component): array
     {
         foreach ($items as $item) {
             if ($item['type'] === 'formContainer' && $item['id'] === $component) {
                 return $item;
             }
-            if ($item['items']) {
-                $result = $this->findFormEditorComponent($item['items'], $component);
-                if ($result) {
-                    return $result;
-                }
+            /** @var array<FormEditorComponent> $children */
+            $children = $item['items'] ?? [];
+            $result = $this->findFormEditorComponent($children, $component);
+            if ($result) {
+                return $result;
             }
         }
         return [];

@@ -25,8 +25,15 @@ class DataUrlConstraint implements FormatConstraint
         return 'data-url';
     }
 
+    /**
+     * @throws CustomError
+     */
     public function check(mixed $value, stdClass $schema): bool
     {
+        if (!is_string($value)) {
+            throw new CustomError('Value is not a string');
+        }
+
         $uploadFile = $this->dataUrlParser->parse($value);
 
         if (isset($schema->maxFileSize) && $uploadFile->size > $schema->maxFileSize) {
@@ -44,6 +51,9 @@ class DataUrlConstraint implements FormatConstraint
         if (isset($schema->acceptedContentTypes)) {
             $fileInfo = new finfo(FILEINFO_MIME_TYPE);
             $mimeType = $fileInfo->buffer($uploadFile->data);
+            if ($mimeType === false) {
+                throw new CustomError('Unalbe to determine file content type');
+            }
             if (!$this->match($schema->acceptedContentTypes, $mimeType)) {
                 throw new CustomError(
                     'File content type (' . $mimeType . ') is not in the list of accepted content types (' . implode(', ', $schema->acceptedContentTypes) . ')',

@@ -7,13 +7,13 @@ namespace Atoolo\Form\Controller;
 use Atoolo\Form\Dto\FormDefinition;
 use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Exception\FormNotFoundException;
-use Atoolo\Form\Processor\SubmitProcessorOptions;
 use Atoolo\Form\Service\FormDefinitionLoader;
 use Atoolo\Form\Service\SubmitHandler;
 use Atoolo\Resource\Exception\ResourceNotFoundException;
 use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceLanguage;
 use Atoolo\Resource\ResourceLocation;
+use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
@@ -53,7 +53,7 @@ class FormController extends AbstractController
         $definition = $this->loadDefinition($lang, $location, $component);
 
         $json = $this->serializer->serialize($definition, 'json', [
-            'json_encode_options' => \JSON_THROW_ON_ERROR,
+            'json_encode_options' => JSON_THROW_ON_ERROR,
             AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
             AbstractNormalizer::IGNORED_ATTRIBUTES => ['processors'], // ignore-attribute not jet working
         ]);
@@ -74,7 +74,7 @@ class FormController extends AbstractController
         $formDefinition = $this->loadDefinition($lang, $location, $component);
 
         $submission = new FormSubmission(
-            $request->getClientIp(),
+            $request->getClientIp() ?? '',
             $formDefinition,
             $data,
         );
@@ -84,7 +84,7 @@ class FormController extends AbstractController
         return $this->json(['status' => 200]);
     }
 
-    private function requestBodyToObject(Request $request): \stdClass
+    private function requestBodyToObject(Request $request): object
     {
         if ($request->getContentTypeFormat() !== 'json') {
             throw new UnsupportedMediaTypeHttpException('Unsupported Media Type');
@@ -95,7 +95,7 @@ class FormController extends AbstractController
         }
 
         try {
-            $data = json_decode($content, false, 512, \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR);
+            $data = json_decode($content, false, 512, JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR);
             if (!is_object($data)) {
                 throw new JsonException('Request body is not an object: ' . $content);
             }
@@ -110,7 +110,7 @@ class FormController extends AbstractController
         $location = $this->toResourceLocation($lang, $path);
         try {
             return $this->formDefinitionLoader->loadFromResource($location, $component);
-        } catch (ResourceNotFoundException $e) {
+        } catch (ResourceNotFoundException) {
             throw new NotFoundHttpException('Resource \'' . $location . '\' not found');
         } catch (FormNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());

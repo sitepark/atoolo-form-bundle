@@ -12,12 +12,17 @@ class LabelTranslator
         private readonly TranslatorInterface $translator,
     ) {}
 
+    /**
+     * @param array<string,mixed|null> $data
+     * @param array<string> $fields
+     * @return array<string,mixed|null>
+     */
     public function translate(array &$data, array $fields): array
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $this->translate($data[$key], $fields);
-            } elseif (in_array($key, $fields, true)) {
+            } elseif (is_string($value) && in_array($key, $fields, true)) {
                 $data[$key] = $this->translateLabel($value);
             }
         }
@@ -26,7 +31,7 @@ class LabelTranslator
 
     public function translateLabel(?string $label): ?string
     {
-        if ($label == null) {
+        if ($label === null) {
             return null;
         }
 

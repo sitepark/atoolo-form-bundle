@@ -13,5 +13,8 @@ interface FromReaderHandler
 
     public function endLayout(Layout $layout): void;
 
+    /**
+     * @param JsonSchema $schema
+     */
     public function control(Control $control, array $schema, string $name, mixed $value): void;
 }

@@ -13,6 +13,9 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 #[AsTaggedItem(index: 'spam-detector', priority: 60)]
 class SpamDetector implements SubmitProcessor
 {
+    /**
+     * @param array<string,mixed> $options
+     */
     public function process(FormSubmission $submission, array $options): FormSubmission
     {
         if ($submission->approved) {

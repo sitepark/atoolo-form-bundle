@@ -7,7 +7,8 @@ namespace Atoolo\Form\Dto\UISchema;
 class Control extends Element
 {
     /**
-     * @param array<string,mixed>|null $options
+     * @param array<string,mixed> $options
+     * @param array<string,mixed>|null $htmlLabel
      */
     public function __construct(
         public ?string $scope = null,

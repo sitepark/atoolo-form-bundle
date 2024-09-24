@@ -14,6 +14,10 @@ class Platform
         return new DateTime();
     }
 
+    /**
+     * @param array<mixed>|object $array
+     * @return array<string,mixed>|array<mixed> $array
+     */
     public function objectToArrayRecursive(mixed $array): array
     {
         if (is_array($array)) {
@@ -29,10 +33,12 @@ class Platform
         if ($array instanceof stdClass) {
             return $this->objectToArrayRecursive((array) $array);
         }
+        /** @var array<string,mixed>|array<mixed> $array */
         return $array;
     }
 
     /**
+     * @param array<mixed>|array<string,mixed> $array
      * @throws \JsonException
      */
     public function arrayToObjectRecursive(array $array): object

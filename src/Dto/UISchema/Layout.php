@@ -16,7 +16,7 @@ class Layout extends Element
      * @param Type $type
      * @param array<Element> $elements
      * @param string|bool|null $label
-     * @var <string,mixed> array
+     * @param array<string,mixed> $options
      */
     public function __construct(
         Type $type,

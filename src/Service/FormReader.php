@@ -11,6 +11,9 @@ use Atoolo\Form\Dto\UISchema\Layout;
 
 class FormReader
 {
+    /**
+     * @param array<string,mixed> $data
+     */
     public function __construct(
         public readonly FormDefinition $formDefinition,
         public readonly array $data,
@@ -37,6 +40,11 @@ class FormReader
             return;
         }
 
+        /**
+         * @var JsonSchema|null $schema
+         * @var string $name
+         * @var array<string,mixed> $data
+         */
         [$schema, $name, $data] = $this->getValue($control->scope);
         if ($schema === null) {
             return;
@@ -53,13 +61,18 @@ class FormReader
         $this->handler->endLayout($layout);
     }
 
-    private function getValue(string $scope): ?array
+    /**
+     * @return array<JsonSchema|string|array<string,mixed>|null>
+     */
+    private function getValue(string $scope): array
     {
         $keys = explode('/', ltrim($scope, '#'));
         $name = end($keys);
 
+        /** @var array<string,mixed> $data */
         $data = $this->data;
 
+        /** @var JsonSchema $schema */
         $schema = $this->formDefinition->schema;
 
         foreach ($keys as $key) {
@@ -78,6 +91,7 @@ class FormReader
                 continue;
             }
             if (isset($data[$key])) {
+                /** @var array<string,mixed> $data */
                 $data = $data[$key];
             } else {
                 $data = null;

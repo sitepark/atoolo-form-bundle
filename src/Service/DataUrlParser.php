@@ -26,7 +26,7 @@ class DataUrlParser
                 $base64Data = substr($parameter, 7);
             } else {
                 [$key, $value] = explode('=', $parameter, 2);
-                $parameters[$key] = urldecode($value ?? '');
+                $parameters[$key] = urldecode($value);
             }
         }
 

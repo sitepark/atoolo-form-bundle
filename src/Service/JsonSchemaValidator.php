@@ -12,7 +12,6 @@ use LogicException;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Validator;
-use stdClass;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -24,7 +23,7 @@ use Atoolo\Form\Service\JsonSchemaValidator\Extended\ValidatorExtended;
 class JsonSchemaValidator
 {
     /**
-     * @param iterable $constraints array<Constraint>
+     * @param iterable<Constraint> $constraints
      */
     public function __construct(
         #[Autowire('@' . ValidatorExtended::class)]
@@ -68,20 +67,21 @@ class JsonSchemaValidator
 
 
     /**
+     * @param JsonSchema $schema
      * @throws JsonException
      */
-    public function validate(array $schema, stdClass $data): void
+    public function validate(array $schema, object $data): void
     {
         $schemaJson = $this->platform->arrayToObjectRecursive($schema);
 
         $result = $this->validator->validate($data, $schemaJson);
 
-        if (!$result->isValid()) {
+        if (!$result->isValid() && $result->error() !== null) {
             throw $this->errorsToValidationFailedException($data, $result->error());
         }
     }
 
-    private function errorsToValidationFailedException(stdClass $data, ValidationError $validationError): ValidationFailedException
+    private function errorsToValidationFailedException(object $data, ValidationError $validationError): ValidationFailedException
     {
         $list = new ConstraintViolationList();
         $formatter = new ErrorFormatter();
