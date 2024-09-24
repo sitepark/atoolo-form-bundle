@@ -7,6 +7,9 @@ namespace Atoolo\Form\Processor;
 use Atoolo\Form\Dto\FormSubmission;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
+/**
+ * Not yet implemented
+ */
 #[AsTaggedItem(index: 'spam-detector', priority: 60)]
 class SpamDetector implements SubmitProcessor
 {

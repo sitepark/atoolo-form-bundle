@@ -6,6 +6,7 @@ namespace Atoolo\Form\Exception;
 
 use RuntimeException;
 
-class InvalidFormConfiguration extends RuntimeException
-{
-}
+/**
+ * @codeCoverageIgnore
+ */
+class InvalidFormConfiguration extends RuntimeException {}

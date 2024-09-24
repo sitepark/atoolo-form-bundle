@@ -7,6 +7,9 @@ namespace Atoolo\Form\Dto;
 use Atoolo\Form\Dto\UISchema\Element;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FormDefinition
 {
     /**

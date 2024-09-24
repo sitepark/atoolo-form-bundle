@@ -15,6 +15,8 @@ use Opis\JsonSchema\ValidationContext;
 /**
  * Copied and modified from https://github.com/opis/json-schema/blob/master/src/Keywords/FormatKeyword.php
  * see: "modified line"
+ *
+ * @codeCoverageIgnore
  */
 class FormatKeywordExtended implements Keyword
 {
@@ -57,9 +59,9 @@ class FormatKeywordExtended implements Keyword
             }
         } catch (CustomError $error) {
             return $this->error($schema, $context, 'format', $error->getMessage(), $error->getArgs() + [
-                    'format' => $this->name,
-                    'type' => $type,
-                ]);
+                'format' => $this->name,
+                'type' => $type,
+            ]);
         }
 
         if ($ok) {

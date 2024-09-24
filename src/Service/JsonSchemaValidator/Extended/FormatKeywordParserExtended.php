@@ -15,6 +15,7 @@ use Opis\JsonSchema\Parsers\SchemaParser;
 /**
  * Copied and modified from https://github.com/opis/json-schema/blob/master/src/Parsers/Keywords/FormatKeywordParser.php
  * see: "modified line"
+ * @codeCoverageIgnore
  */
 class FormatKeywordParserExtended extends FormatKeywordParser
 {

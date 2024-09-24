@@ -10,6 +10,7 @@ use Opis\JsonSchema\Parsers\Keywords\FormatKeywordParser;
 /**
  * An extension so that the format validator can also be passed the schema.
  * For details see https://github.com/opis/json-schema/issues/142
+ * @codeCoverageIgnore
  */
 class Draft202012Extended extends Draft202012
 {

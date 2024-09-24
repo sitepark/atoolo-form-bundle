@@ -18,10 +18,8 @@ class LabelTranslator
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $this->translate($data[$key], $fields);
-            } else {
-                if (in_array($key, $fields)) {
-                    $data[$key] = $this->translateLabel($value);
-                }
+            } elseif (in_array($key, $fields, true)) {
+                $data[$key] = $this->translateLabel($value);
             }
         }
         return $data;

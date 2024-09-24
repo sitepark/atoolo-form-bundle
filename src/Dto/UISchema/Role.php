@@ -6,7 +6,6 @@ namespace Atoolo\Form\Dto\UISchema;
 
 /**
  * TODO: not jet implemented
+ * @codeCoverageIgnore
  */
-class Role extends Element
-{
-}
+class Role extends Element {}

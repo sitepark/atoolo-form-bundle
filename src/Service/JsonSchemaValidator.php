@@ -5,34 +5,34 @@ declare(strict_types=1);
 namespace Atoolo\Form\Service;
 
 use Atoolo\Form\Service\JsonSchemaValidator\Constraint;
-use Atoolo\Form\Service\JsonSchemaValidator\Extended\Draft202012Extended;
 use Atoolo\Form\Service\JsonSchemaValidator\FormatConstraint;
 use InvalidArgumentException;
+use JsonException;
 use LogicException;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Errors\ValidationError;
-use Opis\JsonSchema\JsonPointer;
 use Opis\JsonSchema\Validator;
 use stdClass;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Atoolo\Form\Service\JsonSchemaValidator\Extended\ValidatorExtended;
 
 class JsonSchemaValidator
 {
-    private Validator $validator;
-
     /**
-     * @param iterable $constraints array<string, SubmitProcessor>
+     * @param iterable $constraints array<Constraint>
      */
-    public function __construct(#[AutowireIterator('atoolo_form.jsonSchemaConstraint')] iterable $constraints)
-    {
-        $this->validator = new Validator();
-        $draft = new Draft202012Extended();
-        $this->validator->parser()->addDraft($draft);
-        $this->validator->parser()->setDefaultDraftVersion($draft->version());
-
+    public function __construct(
+        #[Autowire('@' . ValidatorExtended::class)]
+        private readonly Validator $validator,
+        #[AutowireIterator('atoolo_form.jsonSchemaConstraint')]
+        iterable $constraints,
+        private readonly Platform $platform,
+    ) {
         foreach ($constraints as $constraint) {
             $this->registerConstraint($constraint);
         }
@@ -54,15 +54,25 @@ class JsonSchemaValidator
             throw new LogicException('No format resolver found');
         }
 
-        $formatResolver->registerCallable($constraint->getType(), $constraint->getName(), function ($data, $schema) use ($constraint) {
-            return $constraint->check($data, $schema);
-        });
+        $type = $constraint->getType();
+        $name = $constraint->getName();
+
+        $formatResolver->registerCallable(
+            $type,
+            $name,
+            function ($data, $schema) use ($constraint) {
+                return $constraint->check($data, $schema);
+            },
+        );
     }
 
 
+    /**
+     * @throws JsonException
+     */
     public function validate(array $schema, stdClass $data): void
     {
-        $schemaJson = $this->arrayToObjectRecursive($schema);
+        $schemaJson = $this->platform->arrayToObjectRecursive($schema);
 
         $result = $this->validator->validate($data, $schemaJson);
 
@@ -102,19 +112,10 @@ class JsonSchemaValidator
                 '',
                 null,
                 null,
-                $error['constraint'] === 'require' ? new \Symfony\Component\Validator\Constraints\NotBlank() : null,
+                $error['constraint'] === 'require' ? new NotBlank() : null,
             );
             $list->add($v);
         }
         throw new ValidationFailedException($data, $list);
-    }
-
-    /**
-     * @throws \JsonException
-     */
-    private function arrayToObjectRecursive(array $array): object
-    {
-        $json = json_encode($array, JSON_THROW_ON_ERROR);
-        return (object) json_decode($json, false, 512, JSON_THROW_ON_ERROR);
     }
 }

@@ -6,6 +6,7 @@ namespace Atoolo\Form\Exception;
 
 use RuntimeException;
 
-class FormNotFoundException extends RuntimeException
-{
-}
+/**
+ * @codeCoverageIgnore
+ */
+class FormNotFoundException extends RuntimeException {}

@@ -6,6 +6,8 @@ namespace Atoolo\Form\Exception;
 
 use RuntimeException;
 
-class AccessDeniedException extends RuntimeException
-{
-}
+
+/**
+ * @codeCoverageIgnore
+ */
+class AccessDeniedException extends RuntimeException {}

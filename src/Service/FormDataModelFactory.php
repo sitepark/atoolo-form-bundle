@@ -17,7 +17,7 @@ class FormDataModelFactory implements FromReaderHandler
     private bool $includeEmptyFields = false;
 
     public function __construct(
-        private readonly DataUrlParser $dataUrlParser
+        private readonly DataUrlParser $dataUrlParser,
     ) {}
 
     public function create(FormDefinition $definition, array $data, bool $includeEmptyFields): array
@@ -36,8 +36,11 @@ class FormDataModelFactory implements FromReaderHandler
         $data = [
             'type' => strtolower($layout->type->name),
             'layout' => true,
-            'label' => $layout->label,
         ];
+        if (!empty($layout->label) && ($layout->options['hideLabel'] ?? false) === false) {
+            $data['label'] = $layout->label;
+        }
+
         $this->stack[] = $this->items;
         $this->stack[] = $data;
         $this->items = [];
@@ -62,7 +65,8 @@ class FormDataModelFactory implements FromReaderHandler
 
         $type = $this->identifyType($control, $schema);
         if ($type === 'file' && !empty($value)) {
-            $value = $this->dataUrlParser->parse($value);
+            $uploadFile = $this->dataUrlParser->parse($value);
+            $value = get_object_vars($uploadFile);
         }
 
         $options = null;
@@ -84,16 +88,29 @@ class FormDataModelFactory implements FromReaderHandler
                     $value[] = $label;
                 }
             }
+            if ($schema['type'] === 'string') {
+                $value = $value[0] ?? '';
+            }
         }
 
-        $this->items[] = [
+        $item = [
             'type' => $type,
             'name' => $name,
-            'label' => $control->label,
-            'htmlLabel' => $control->htmlLabel,
-            'value' => $value,
-            'options' => $options,
         ];
+        if (!empty($control->label)) {
+            $item['label'] = $control->label;
+        }
+        if (!empty($control->htmlLabel)) {
+            $item['htmlLabel'] = $control->htmlLabel;
+        }
+        if (!empty($value)) {
+            $item['value'] = $value;
+        }
+        if (!empty($options)) {
+            $item['options'] = $options;
+        }
+
+        $this->items[] = $item;
     }
 
     private function identifyType(Control $control, array $schema): string
@@ -125,7 +142,8 @@ class FormDataModelFactory implements FromReaderHandler
             return 'radio-buttons';
         }
 
-        if ($type === 'string' && isset($schema['items']['oneOf'])) {
+        if ($type === 'string' && isset($schema['oneOf'])
+        ) {
             return 'select';
         }
 

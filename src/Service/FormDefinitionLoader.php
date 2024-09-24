@@ -8,11 +8,9 @@ use Atoolo\Form\Dto\FormDefinition;
 use Atoolo\Form\Dto\UISchema\Layout;
 use Atoolo\Form\Exception\FormNotFoundException;
 use Atoolo\Form\Exception\InvalidFormConfiguration;
-use Atoolo\Form\Processor\EmailSender\Options;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
@@ -26,7 +24,8 @@ use Symfony\Component\Serializer\Serializer;
 class FormDefinitionLoader
 {
     public function __construct(
-        #[Autowire(service: 'atoolo_resource.resource_loader')] private readonly ResourceLoader $resourceLoader,
+        #[Autowire(service: 'atoolo_resource.resource_loader')]
+        private readonly ResourceLoader $resourceLoader,
         private readonly LabelTranslator $translator,
     ) {}
 
@@ -138,10 +137,6 @@ class FormDefinitionLoader
             classDiscriminatorResolver: $discriminator,
         )];
         return (new Serializer($normalizers, $encoders))->denormalize($data, Layout::class);
-    }
-
-    private function translateUiSchemaLabel(Layout $layout): Layout {
-
     }
 
     private function findFormEditorComponent(array $items, string $component): array

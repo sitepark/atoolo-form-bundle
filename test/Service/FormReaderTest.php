@@ -21,88 +21,17 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(FormReader::class)]
 class FormReaderTest extends TestCase
 {
-
-    public function testDebug2(): void
-    {
-
-        $data = new \stdClass();
-        //$data->animal = "doc";
-        $data->upload = "data irgendwas";
-
-        $schemaJson = <<<'JSON'
-{
-    "type": "object",
-    "properties": {
-        "animal": {
-            "type": "string",
-            "format" : "date"
-        },
-        "upload" : {
-            "type" : "string",
-            "format" : "data-url"
-        }
-    }
-}
-JSON;
-
-        $validator = new \Opis\JsonSchema\Validator();
-        //print_r($valudator);
-        $draft = new Draft202012Extended();
-        $validator->parser()->addDraft($draft);
-        $validator->parser()->setDefaultDraftVersion($draft->version());
-        print_r($validator->parser()->supportedDrafts());
-        print_r($validator->parser()->defaultDraftVersion());
-        $validator->parser()->getFormatResolver()->registerCallable('string', 'data-url', function ($data) {
-            return false;
-        });
-        //$validator->resolver()->registerRaw(json_decode($schemaJson));
-        $result = $validator->validate($data, $schemaJson);
-
-        if (!$result->isValid()) {
-            echo "NOT VALID\n";
-            print_r((new ErrorFormatter())->format($result->error()));
-        }
-    }
-    public function testDebug(): void
-    {
-        $araryData = ["doc", "cat"];
-        $arraySchema = [
-            'type' => 'array',
-            "items" => [
-                "oneOf" => [
-                    ["const" => "doc", "title" => "Doc"],
-                    ["const" => "cat", "title" => "Cat"],
-                    ["const" => "mouse", "title" => "Mouse"]
-                ]
-            ]
-        ];
-
-        $stringData = "doc";
-        $stringSchema = [
-            'type' => 'string',
-            "oneOf" => [
-                ["const" => "doc", "title" => "Doc"],
-                ["const" => "cat", "title" => "Cat"],
-                ["const" => "mouse", "title" => "Mouse"]
-            ]
-        ];
-        $validator = new Validator();
-        $validator->validate($stringData, $stringSchema);
-
-        if (!$validator->isValid()) {
-            foreach ($validator->getErrors() as $error) {
-                print_r($error);
-            }
-        }
-    }
-
     /**
      * @throws Exception
      */
-    public function testLoad(): void
+    public function testWithMissingSchemaField(): void
     {
-        $uischema = new Layout(Type::GROUP);
-        $control = new Control('#/properties/field-1');
+        $uischema = new Layout(
+            Type::GROUP,
+            [
+                new Control('#/properties/field-2'),
+            ],
+        );
         $schema = [
             'type' => 'object',
             'properties' => [
@@ -111,15 +40,85 @@ JSON;
                 ],
             ],
         ];
-        $uischema->elements[] = $control;
 
-        $formDefinition = new FormDefinition(
-            $schema,
-            $uischema,
-            null,
-            ResourceLocation::of('/test.php'),
-            'form-1',
+        $formDefinition = $this->createDefinition($schema, $uischema);
+        $data = [
+            'field-1' => 'value',
+        ];
+
+        $handler = $this->createMock(FromReaderHandler::class);
+        $handler->expects($this->once())
+            ->method('startLayout')
+            ->with($uischema);
+        $handler->expects($this->never())
+            ->method('control');
+        $handler->expects($this->once())
+            ->method('endLayout')
+            ->with($uischema);
+
+        $reader = new FormReader($formDefinition, $data, $handler);
+        $reader->read();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testWithNullScope(): void
+    {
+        $uischema = new Layout(
+            Type::GROUP,
+            [
+                new Control(),
+            ],
         );
+        $schema = [
+            'type' => 'object',
+            'properties' => [
+                'field-1' => [
+                    'type' => 'string',
+                ],
+            ],
+        ];
+
+        $formDefinition = $this->createDefinition($schema, $uischema);
+        $data = [
+            'field-1' => 'value',
+        ];
+
+        $handler = $this->createMock(FromReaderHandler::class);
+        $handler->expects($this->once())
+            ->method('startLayout')
+            ->with($uischema);
+        $handler->expects($this->never())
+            ->method('control');
+        $handler->expects($this->once())
+            ->method('endLayout')
+            ->with($uischema);
+
+        $reader = new FormReader($formDefinition, $data, $handler);
+        $reader->read();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testLoad(): void
+    {
+        $control = new Control('#/properties/field-1');
+        $uischema = new Layout(
+            Type::GROUP,
+            [ $control ],
+        );
+        $schema = [
+            'type' => 'object',
+            'properties' => [
+                'field-1' => [
+                    'type' => 'string',
+                ],
+            ],
+        ];
+
+        $formDefinition = $this->createDefinition($schema, $uischema);
 
         $data = [
             'field-1' => 'value',
@@ -138,5 +137,20 @@ JSON;
 
         $reader = new FormReader($formDefinition, $data, $handler);
         $reader->read();
+    }
+
+    private function createDefinition(
+        array $schema,
+        Layout $uischema,
+    ): FormDefinition {
+        return new FormDefinition(
+            $schema,
+            $uischema,
+            null,
+            [],
+            [],
+            'form-1',
+            [],
+        );
     }
 }

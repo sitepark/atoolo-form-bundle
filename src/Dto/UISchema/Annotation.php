@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Dto\UISchema;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Annotation extends Element
 {
     /**

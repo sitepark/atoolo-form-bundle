@@ -1,8 +1,10 @@
 parameters:
-    atoolo_form_default_processors:
+    atoolo_form.default_processors:
       'ip-limiter': ~
       'submit-limiter': ~
       'json-schema-validator': ~
+    atoolo_form.processor.ip_allower.allowed_ips: []
+    atoolo_form.processor.ip_blocker.blocked_ips: []
 
 services:
 

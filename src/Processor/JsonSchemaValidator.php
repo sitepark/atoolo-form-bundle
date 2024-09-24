@@ -15,6 +15,7 @@ class JsonSchemaValidator implements SubmitProcessor
 
     /**
      * @throws ValidationFailedException
+     * @throws \JsonException
      */
     public function process(FormSubmission $submission, array $options): FormSubmission
     {

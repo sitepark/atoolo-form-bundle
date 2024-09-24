@@ -30,7 +30,7 @@ class DataUrlParser
             }
         }
 
-        $binaryData = base64_decode($base64Data);
+        $binaryData = base64_decode($base64Data, true);
         if ($binaryData === false) {
             throw new DataUrlException('invalid base64');
         }

@@ -6,6 +6,7 @@ namespace Atoolo\Form\Exception;
 
 use RuntimeException;
 
-class DataUrlException extends RuntimeException
-{
-}
+/**
+ * @codeCoverageIgnore
+ */
+class DataUrlException extends RuntimeException {}

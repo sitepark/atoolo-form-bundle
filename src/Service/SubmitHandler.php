@@ -24,7 +24,7 @@ class SubmitHandler
     public function __construct(
         #[AutowireIterator('atoolo_form.processor', indexAttribute: 'key')]
         iterable $processors,
-        #[Autowire(param: 'atoolo_form_default_processors')]
+        #[Autowire(param: 'atoolo_form.default_processors')]
         private readonly array $defaultProcessorKeys,
     ) {
         $this->processors = $processors instanceof \Traversable ?

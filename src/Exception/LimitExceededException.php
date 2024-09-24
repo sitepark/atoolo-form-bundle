@@ -6,6 +6,7 @@ namespace Atoolo\Form\Exception;
 
 use RuntimeException;
 
-class LimitExceededException extends RuntimeException
-{
-}
+/**
+ * @codeCoverageIgnore
+ */
+class LimitExceededException extends RuntimeException {}

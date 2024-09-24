@@ -36,8 +36,12 @@ class FormReader
         if ($control->scope === null) {
             return;
         }
-        $nameValue = $this->getValue($control->scope);
-        $this->handler->control($control, ...$nameValue);
+
+        [$schema, $name, $data] = $this->getValue($control->scope);
+        if ($schema === null) {
+            return;
+        }
+        $this->handler->control($control, $schema, $name, $data);
     }
 
     private function readLayout(Layout $layout): void

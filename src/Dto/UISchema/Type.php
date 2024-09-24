@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Dto\UISchema;
 
+/**
+ * @codeCoverageIgnore
+ */
 enum Type: string
 {
     case CONTROL = 'Control';

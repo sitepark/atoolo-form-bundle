@@ -16,7 +16,10 @@ class Control extends Element
         public readonly array $options = [],
     ) {
         parent::__construct(Type::CONTROL);
-        if (!preg_match('/^#(?:\/[^\/"]+)+$/', $this->scope)) {
+        if (
+            $this->scope !== null
+            && !preg_match('/^#(?:\/[^\/"]+)+$/', $this->scope)
+        ) {
             throw new \InvalidArgumentException('Invalid scope: ' . $this->scope);
         }
     }

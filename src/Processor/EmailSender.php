@@ -35,9 +35,6 @@ class EmailSender implements SubmitProcessor
      */
     public function process(FormSubmission $submission, array $options): FormSubmission
     {
-        if ($options === null) {
-            throw new \InvalidArgumentException('Options are required');
-        }
         $rendererModel = $this->modelFactory->create($submission, $options['showEmpty'] ?? false);
         $result = $this->htmlMessageRenderer->render($rendererModel);
         $html = $result->html;
@@ -57,7 +54,7 @@ class EmailSender implements SubmitProcessor
             $email->bcc(new Address($bcc['address'], $bcc['name']));
         }
 
-        $email->subject($options['subject']);
+        $email->subject($options['subject'] ?? $result->subject ?? '');
 
         if (($options['format'] ?? 'html') === 'html') {
             $email ->html($html);

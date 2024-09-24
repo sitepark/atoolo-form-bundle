@@ -55,7 +55,7 @@ class FormController extends AbstractController
         $json = $this->serializer->serialize($definition, 'json', [
             'json_encode_options' => \JSON_THROW_ON_ERROR,
             AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['processors'],
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['processors'], // ignore-attribute not jet working
         ]);
 
         return new JsonResponse(data: $json, json: true);
@@ -128,7 +128,14 @@ class FormController extends AbstractController
             return ResourceLocation::of('/' . $path . '.php');
         }
 
-        return ResourceLocation::of('/' . $lang . '/' . $path . '.php');
+        // lang is not a language but part of the path, if not empty
+        $location = (
+            empty($lang)
+                ? '/' . $path
+                : '/' . $lang . '/' . $path
+        ) . '.php';
+
+        return ResourceLocation::of($location);
     }
 
     private function isSupportedTranslation(string $lang): bool

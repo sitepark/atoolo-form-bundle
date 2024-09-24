@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Atoolo\Form\Service\Email;
 
 use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
-use Atoolo\Form\Dto\FormSubmission;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

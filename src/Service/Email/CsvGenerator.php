@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Service\Email;
 
+use League\Csv\CannotInsertRecord;
+use League\Csv\Exception;
 use League\Csv\Writer;
 
 class CsvGenerator
 {
 
+    /**
+     * @throws CannotInsertRecord
+     * @throws Exception
+     */
     public function generate(array $model): string
     {
         $csv = Writer::createFromString();

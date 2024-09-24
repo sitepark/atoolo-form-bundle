@@ -6,6 +6,9 @@ namespace Atoolo\Form\Dto\UISchema;
 
 use Symfony\Component\Serializer\Attribute\DiscriminatorMap;
 
+/**
+ * @codeCoverageIgnore
+ */
 #[DiscriminatorMap(typeProperty: 'type', mapping: [
     'Annotation' => Annotation::class,
     'Control' => Control::class,
