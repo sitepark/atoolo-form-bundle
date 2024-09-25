@@ -14,7 +14,9 @@ use Atoolo\Form\Service\Email\EmailMessageModelFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
+use Soundasleep\Html2TextException;
 use stdClass;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -24,6 +26,9 @@ class EmailSenderTest extends TestCase
 {
     /**
      * @throws Exception
+     * @throws TransportExceptionInterface
+     * @throws Html2TextException
+     * @throws \League\Csv\Exception
      */
     public function testSend(): void
     {
@@ -31,11 +36,13 @@ class EmailSenderTest extends TestCase
         $result = new EmailHtmlMessageRendererResult(
             subject: 'test',
             html: '<p>test</p>',
-            attachments: [(object) [
-                'filename' => 'text.txt',
-                'contentType' => 'text/plain',
-                'data' => 'text',
-            ]],
+            attachments: [
+                [
+                    'filename' => 'text.txt',
+                    'contentType' => 'text/plain',
+                    'data' => 'text',
+                ],
+            ],
         );
         $htmlMessageRenderer = $this->createStub(EmailHtmlMessageRenderer::class);
         $htmlMessageRenderer->method('render')

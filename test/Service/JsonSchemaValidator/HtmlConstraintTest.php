@@ -42,6 +42,12 @@ class HtmlConstraintTest extends TestCase
         );
     }
 
+    public function testCheckWithNonString(): void
+    {
+        $this->expectException(CustomError::class);
+        $this->constraint->check(0, (object) []);
+    }
+
     public static function dataToCheck(): array
     {
         return [

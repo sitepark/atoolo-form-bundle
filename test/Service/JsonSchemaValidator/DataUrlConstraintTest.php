@@ -46,6 +46,12 @@ class DataUrlConstraintTest extends TestCase
         );
     }
 
+    public function testCheckWithNonString(): void
+    {
+        $this->expectException(CustomError::class);
+        $this->constraint->check(0, (object) []);
+    }
+
     public static function dataToCheck(): array
     {
         $pngData = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII');

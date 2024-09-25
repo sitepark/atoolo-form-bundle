@@ -50,10 +50,7 @@ class DataUrlConstraint implements FormatConstraint
         }
         if (isset($schema->acceptedContentTypes)) {
             $fileInfo = new finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $fileInfo->buffer($uploadFile->data);
-            if ($mimeType === false) {
-                throw new CustomError('Unalbe to determine file content type');
-            }
+            $mimeType = $fileInfo->buffer($uploadFile->data) ?: 'application/octet-stream';
             if (!$this->match($schema->acceptedContentTypes, $mimeType)) {
                 throw new CustomError(
                     'File content type (' . $mimeType . ') is not in the list of accepted content types (' . implode(', ', $schema->acceptedContentTypes) . ')',
