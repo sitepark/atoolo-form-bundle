@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Dto\Email;
 
-use Atoolo\Form\Dto\FormData\UploadFile;
-
 /**
  * @codeCoverageIgnore
  */

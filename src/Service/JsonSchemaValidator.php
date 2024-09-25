@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atoolo\Form\Service;
 
 use Atoolo\Form\Service\JsonSchemaValidator\Constraint;
+use Atoolo\Form\Service\JsonSchemaValidator\Extended\ValidatorExtended;
 use Atoolo\Form\Service\JsonSchemaValidator\FormatConstraint;
 use InvalidArgumentException;
 use JsonException;
@@ -18,7 +19,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
-use Atoolo\Form\Service\JsonSchemaValidator\Extended\ValidatorExtended;
 
 class JsonSchemaValidator
 {
