@@ -144,13 +144,14 @@ class FormReaderTest extends TestCase
         Layout $uischema,
     ): FormDefinition {
         return new FormDefinition(
-            $schema,
-            $uischema,
-            null,
-            [],
-            [],
-            'form-1',
-            [],
+            schema: $schema,
+            uischema: $uischema,
+            data: null,
+            buttons: [],
+            messages: [],
+            lang: 'en',
+            component: 'form-1',
+            processors: [],
         );
     }
 }

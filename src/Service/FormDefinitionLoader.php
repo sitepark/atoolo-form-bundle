@@ -101,7 +101,7 @@ class FormDefinitionLoader
 
         /** @var FormEditorModel $model */
         $model = $componentConfig['model'] ?? [];
-        return $this->loadFromModel($component, $model);
+        return $this->loadFromModel($resource->lang->code, $component, $model);
     }
 
     /**
@@ -109,7 +109,7 @@ class FormDefinitionLoader
      * @param FormEditorModel $model
      * @return FormDefinition
      */
-    public function loadFromModel(string $component, array $model): FormDefinition
+    public function loadFromModel(string $lang, string $component, array $model): FormDefinition
     {
         if (!isset($model['jsonForms'])) {
             throw new InvalidFormConfiguration('Missing jsonForms definition in component \'' . $component . '\'');
@@ -154,6 +154,7 @@ class FormDefinitionLoader
             data: null,
             buttons: $buttons,
             messages: $messages,
+            lang: $lang,
             component: $component,
             processors: $processor,
         );

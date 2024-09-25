@@ -38,6 +38,7 @@ class JsonSchemaValidatorTest extends TestCase
             data: [],
             buttons: [],
             messages: [],
+            lang: 'en',
             component: 'test',
             processors: [],
         );

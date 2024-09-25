@@ -261,6 +261,7 @@ class FormDefinitionLoaderTest extends TestCase
                     'text' => 'Text',
                 ],
             ],
+            lang: 'en',
             component: 'formEditor-1',
             processors: [
                 'email-sender' => [
@@ -306,7 +307,7 @@ class FormDefinitionLoaderTest extends TestCase
             '',
             '',
             '',
-            ResourceLanguage::default(),
+            ResourceLanguage::of('en'),
             new DataBag(['content' => $content]),
         ));
     }

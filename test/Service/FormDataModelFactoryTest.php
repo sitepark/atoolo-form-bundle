@@ -83,6 +83,7 @@ class FormDataModelFactoryTest extends TestCase
             data: $data,
             buttons: null,
             messages: null,
+            lang: '',
             component: '',
             processors: null,
         );

@@ -138,13 +138,14 @@ class FormControllerTest extends TestCase
     public function testGetDefinition(): void
     {
         $this->formDefinitionLoader->method('loadFromResource')->willReturn(new FormDefinition(
-            [],
-            new Layout(Type::VERTICAL_LAYOUT, []),
-            null,
-            null,
-            null,
-            'form-1',
-            [
+            schema: [],
+            uischema: new Layout(Type::VERTICAL_LAYOUT, []),
+            data: null,
+            buttons: null,
+            messages: null,
+            lang: 'en',
+            component: 'form-1',
+            processors: [
                 'processora' => ['options' => 'value'],
             ],
         ));
@@ -158,6 +159,7 @@ class FormControllerTest extends TestCase
                 "options" => [],
                 "type" => "VerticalLayout",
             ],
+            "lang" => "en",
             "component" => "form-1",
         ];
         $this->assertEquals(

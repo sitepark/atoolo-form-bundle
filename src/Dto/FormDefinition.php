@@ -28,6 +28,7 @@ class FormDefinition
         public readonly ?array $data,
         public readonly ?array $buttons,
         public readonly ?array $messages,
+        public readonly string $lang,
         public readonly string $component,
         #[Ignore]
         public readonly ?array $processors,

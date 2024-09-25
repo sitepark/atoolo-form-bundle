@@ -6,6 +6,8 @@ namespace Atoolo\Form\Test\Service\Email;
 
 use Atoolo\Form\Dto\FormDefinition;
 use Atoolo\Form\Dto\FormSubmission;
+use Atoolo\Form\Dto\UISchema\Layout;
+use Atoolo\Form\Dto\UISchema\Type;
 use Atoolo\Form\Service\Email\EmailMessageModelFactory;
 use Atoolo\Form\Service\FormDataModelFactory;
 use Atoolo\Form\Service\Platform;
@@ -60,11 +62,22 @@ class EmailMessageModelFactoryTest extends TestCase
         $platform->method('datetime')->willReturn($dateTime);
         $factory = new EmailMessageModelFactory($channel, $formDataModelFactory, $platform);
 
-        $formDefinition = $this->createStub(FormDefinition::class);
+        $formDefinition = new FormDefinition(
+            schema: [],
+            uischema: new Layout(Type::VERTICAL_LAYOUT),
+            data: [],
+            buttons: [],
+            messages: [],
+            lang: 'en',
+            component: 'test',
+            processors: [],
+        );
+
         $data = new stdClass();
         $submission = new FormSubmission('127.0.0.1', $formDefinition, $data);
 
         $expected = [
+            'lang' => 'en',
             'url' => 'https://test.example.com',
             'tenant' => ['name' => 'Test Tenant'],
             'host' => 'test.example.com',

@@ -33,6 +33,7 @@ class EmailMessageModelFactory
         );
         $dateTime = $this->platform->datetime();
         return [
+            'lang' => $submission->formDefinition->lang,
             'url' => 'https://' . $this->channel->serverName,
             'tenant' => [ 'name' => $this->channel->tenant->name ],
             'host' => $this->channel->serverName,
