@@ -11,11 +11,15 @@ use Phpro\ApiProblem\ApiProblemInterface;
 use Phpro\ApiProblem\Http\HttpApiProblem;
 use Phpro\ApiProblem\Http\ValidationApiProblem;
 use Phpro\ApiProblemBundle\Transformer\ExceptionTransformerInterface;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Throwable;
 
+/**
+ * @implements ExceptionTransformerInterface<RuntimeException>
+ */
 #[AutoconfigureTag('phpro.api_problem.exception_transformer')]
 class ExceptionTransformer implements ExceptionTransformerInterface
 {

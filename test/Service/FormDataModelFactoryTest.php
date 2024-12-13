@@ -50,7 +50,7 @@ class FormDataModelFactoryTest extends TestCase
     {
         $textures = [];
         $files = glob(self::$RESOURCE_PATH . '/*.php');
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $textures[basename($file)] = [require $file];
         }
 
