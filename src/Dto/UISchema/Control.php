@@ -7,8 +7,10 @@ namespace Atoolo\Form\Dto\UISchema;
 class Control extends Element
 {
     /**
-     * @param array<string,mixed> $options
-     * @param array<string,mixed>|null $htmlLabel
+     * @param string|null $scope https://jsonforms.io/docs/uischema/controls#scope-string
+     * @param string|bool|null $label https://jsonforms.io/docs/uischema/controls#label-string--boolean
+     * @param array<string,mixed>|null $htmlLabel CMS specific property
+     * @param array<string,mixed> $options https://jsonforms.io/docs/uischema/controls#options
      */
     public function __construct(
         public ?string $scope = null,
