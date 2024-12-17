@@ -134,6 +134,7 @@ class FormDataModelFactory implements FromReaderHandler
 
     /**
      * @param JsonSchema $schema
+     * @see https://sitepark.github.io/atoolo-docs/develop/form/controls/#json-schema
      */
     private function identifyType(Control $control, array $schema): string
     {
