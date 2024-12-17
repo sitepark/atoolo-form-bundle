@@ -47,6 +47,7 @@ class EmailSender implements SubmitProcessor
         $rendererModel = $this->modelFactory->create($submission, $options['showEmpty'] ?? false);
         $result = $this->htmlMessageRenderer->render($rendererModel);
         $html = $result->html;
+        // TODO: implement e separate renderer for text
         $text = Html2Text::convert($html);
 
         $email = new Email();
