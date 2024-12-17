@@ -9,12 +9,12 @@ use Symfony\Component\Config\Loader\GlobFileLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 /**
  * @codeCoverageIgnore
  */
-class AtooloFormBundle extends Bundle
+class AtooloFormBundle extends AbstractBundle
 {
     public function build(ContainerBuilder $container): void
     {
@@ -30,5 +30,6 @@ class AtooloFormBundle extends Bundle
         );
 
         $loader->load('services.yaml');
+        $loader->load('rate_limiter.yaml');
     }
 }
