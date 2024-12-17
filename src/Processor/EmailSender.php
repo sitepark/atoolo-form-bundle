@@ -29,8 +29,8 @@ class EmailSender implements SubmitProcessor
 
     /**
      * @param array{
-     *     from: array<array{address: string, name: string}>,
-     *     to: array<array{address: string, name: string}>,
+     *     from: non-empty-array<array{address: string, name: string}>,
+     *     to: non-empty-array<array{address: string, name: string}>,
      *     cc?: array<array{address: string, name: string}>,
      *     bcc?: array<array{address: string, name: string}>,
      *     subject?: string,
