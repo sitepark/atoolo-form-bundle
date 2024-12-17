@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Dto;
 
+use stdClass;
+
 /**
  * @codeCoverageIgnore
  */
@@ -14,6 +16,6 @@ class FormSubmission
     public function __construct(
         public readonly string $remoteAddress,
         public readonly FormDefinition $formDefinition,
-        public readonly object $data,
+        public readonly stdClass $data,
     ) {}
 }

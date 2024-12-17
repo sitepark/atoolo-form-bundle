@@ -13,6 +13,7 @@ use Atoolo\Resource\Exception\ResourceNotFoundException;
 use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceLanguage;
 use Atoolo\Resource\ResourceLocation;
+use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
@@ -83,7 +84,7 @@ class FormController extends AbstractController
         return $this->json(['status' => 200]);
     }
 
-    private function requestBodyToObject(Request $request): object
+    private function requestBodyToObject(Request $request): stdClass
     {
         if ($request->getContentTypeFormat() !== 'json') {
             throw new UnsupportedMediaTypeHttpException('Unsupported Media Type');
@@ -95,7 +96,7 @@ class FormController extends AbstractController
 
         try {
             $data = json_decode($content, false, 512, JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR);
-            if (!is_object($data)) {
+            if (!($data instanceof stdClass)) {
                 throw new JsonException('Request body is not an object: ' . $content);
             }
             return $data;
