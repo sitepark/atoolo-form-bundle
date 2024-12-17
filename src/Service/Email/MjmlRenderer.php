@@ -9,8 +9,10 @@ namespace Atoolo\Form\Service\Email;
  */
 class MjmlRenderer
 {
-    public function render(string $html): string
+    public function render(string $mjml): string
     {
+        // TODO: use mjml template engine to render html from mjml
+        $html = $mjml;
         return $html;
     }
 }
