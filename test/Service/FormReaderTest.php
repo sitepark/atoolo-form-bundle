@@ -63,45 +63,6 @@ class FormReaderTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testWithNullScope(): void
-    {
-        $uischema = new Layout(
-            Type::GROUP,
-            [
-                new Control(),
-            ],
-        );
-        $schema = [
-            'type' => 'object',
-            'properties' => [
-                'field-1' => [
-                    'type' => 'string',
-                ],
-            ],
-        ];
-
-        $formDefinition = $this->createDefinition($schema, $uischema);
-        $data = [
-            'field-1' => 'value',
-        ];
-
-        $handler = $this->createMock(FromReaderHandler::class);
-        $handler->expects($this->once())
-            ->method('startLayout')
-            ->with($uischema);
-        $handler->expects($this->never())
-            ->method('control');
-        $handler->expects($this->once())
-            ->method('endLayout')
-            ->with($uischema);
-
-        $reader = new FormReader($formDefinition, $data, $handler);
-        $reader->read();
-    }
-
-    /**
-     * @throws Exception
-     */
     public function testLoad(): void
     {
         $control = new Control('#/properties/field-1');

@@ -36,10 +36,6 @@ class FormReader
 
     private function readControl(Control $control): void
     {
-        if ($control->scope === null) {
-            return;
-        }
-
         /**
          * @var JsonSchema|null $schema
          * @var string $name
