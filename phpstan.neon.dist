@@ -45,8 +45,7 @@ parameters:
                url: string,
                tenant: array{name: string},
                host: string,
-               date: string,
-               time: string,
+               date: \DateTime,
                items: array<EmailMessageModelItem>,
             }
         '''
