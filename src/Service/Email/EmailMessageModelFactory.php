@@ -37,8 +37,7 @@ class EmailMessageModelFactory
             'url' => 'https://' . $this->channel->serverName,
             'tenant' => [ 'name' => $this->channel->tenant->name ],
             'host' => $this->channel->serverName,
-            'date' => $dateTime->format('d.m.Y'),
-            'time' => $dateTime->format('H:i:s'),
+            'date' => $dateTime,
             'items' => $items,
         ];
     }

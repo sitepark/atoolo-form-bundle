@@ -21,7 +21,7 @@
     </div>
 
     <div class="footer">
-        {{ 'email.footer'|trans({'{host}': host, '{date}': date, '{time}': time}, 'form')|raw }}
+        {{ 'email.footer'|trans({'{host}': host, '{date}': date|date('d.m.Y'), '{time}': date|date('H:i:s')}, 'form')|raw }}
     </div>
 </div>
 </body>
