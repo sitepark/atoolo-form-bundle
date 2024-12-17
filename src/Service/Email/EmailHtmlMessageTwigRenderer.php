@@ -10,7 +10,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class EmailHtmlMessageTwigRenderer implements EmailHtmlMessageRenderer
+class EmailHtmlMessageTwigRenderer extends EmailHtmlMessageRenderer
 {
     public function __construct(
         private readonly Environment $twig,
@@ -31,25 +31,5 @@ class EmailHtmlMessageTwigRenderer implements EmailHtmlMessageRenderer
             html: $html,
             attachments: $this->findAttachments($model['items']),
         );
-    }
-
-    /**
-     * @param array<EmailMessageModelItem> $model
-     * @return array<EmailMessageModelFileUpload>
-     */
-    private function findAttachments(array $model): array
-    {
-        $attachments = [];
-        foreach ($model as $item) {
-            $type = $item['type'] ?? '';
-            if ($type === 'file') {
-                /** @var EmailMessageModelControlItem $item */
-                /** @var EmailMessageModelFileUpload $value */
-                $value = $item['value'];
-                $attachments[] = $value;
-            }
-        }
-
-        return $attachments;
     }
 }
