@@ -81,8 +81,7 @@ class EmailMessageModelFactoryTest extends TestCase
             'url' => 'https://test.example.com',
             'tenant' => ['name' => 'Test Tenant'],
             'host' => 'test.example.com',
-            'date' => '16.03.0029',
-            'time' => '09:38:20',
+            'date' => $dateTime,
             'items' => ['dummy' => true],
         ];
 

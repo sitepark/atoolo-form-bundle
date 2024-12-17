@@ -141,7 +141,7 @@ class FormControllerTest extends TestCase
             schema: [],
             uischema: new Layout(Type::VERTICAL_LAYOUT, []),
             data: null,
-            buttons: null,
+            buttons: [],
             messages: null,
             lang: 'en',
             component: 'form-1',
@@ -159,6 +159,7 @@ class FormControllerTest extends TestCase
                 "options" => [],
                 "type" => "VerticalLayout",
             ],
+            "buttons" => [],
             "lang" => "en",
             "component" => "form-1",
         ];

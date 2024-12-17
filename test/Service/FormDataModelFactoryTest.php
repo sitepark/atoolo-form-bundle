@@ -81,7 +81,7 @@ class FormDataModelFactoryTest extends TestCase
             schema : $schema,
             uischema: $this->deserializeUiSchema($uischema),
             data: $data,
-            buttons: null,
+            buttons: [],
             messages: null,
             lang: '',
             component: '',
