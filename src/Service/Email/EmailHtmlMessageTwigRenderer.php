@@ -27,7 +27,6 @@ class EmailHtmlMessageTwigRenderer extends EmailHtmlMessageRenderer
         $html = $this->twig->render('@AtooloForm/email.html.twig', $model);
 
         return new EmailHtmlMessageRendererResult(
-            subject: '',
             html: $html,
             attachments: $this->findAttachments($model['items']),
         );

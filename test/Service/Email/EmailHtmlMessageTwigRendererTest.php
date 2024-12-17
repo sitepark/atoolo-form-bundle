@@ -35,7 +35,6 @@ class EmailHtmlMessageTwigRendererTest extends TestCase
         ];
 
         $expected = new EmailHtmlMessageRendererResult(
-            subject: '',
             html: 'html',
             attachments: ['file1'],
         );

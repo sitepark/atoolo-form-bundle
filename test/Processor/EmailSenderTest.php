@@ -34,7 +34,6 @@ class EmailSenderTest extends TestCase
     {
         $modelFactory = $this->createStub(EmailMessageModelFactory::class);
         $result = new EmailHtmlMessageRendererResult(
-            subject: 'test',
             html: '<p>test</p>',
             attachments: [
                 [
@@ -83,6 +82,7 @@ class EmailSenderTest extends TestCase
 
         $emailSender->process($submission, [
             'attachCsv' => true,
+            'subject' => 'test',
             'from' => [[
                 'address' => 'from@example.com',
                 'name' => 'From',

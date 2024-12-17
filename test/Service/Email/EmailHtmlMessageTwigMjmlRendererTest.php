@@ -29,10 +29,9 @@ class EmailHtmlMessageTwigMjmlRendererTest extends TestCase
 
         $renderer = new EmailHtmlMessageTwigMjmlRenderer($twig, $mjml);
         $expected = new EmailHtmlMessageRendererResult(
-            subject: '',
             html: 'html',
             attachments: [],
         );
-        $this->assertEquals($expected, $renderer->render([]), 'unexpected result');
+        $this->assertEquals($expected, $renderer->render(['items' => []]), 'unexpected result');
     }
 }
