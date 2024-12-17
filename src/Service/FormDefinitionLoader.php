@@ -124,6 +124,7 @@ class FormDefinitionLoader
             throw new InvalidFormConfiguration('Missing jsonForms.uischema definition in component \'' . $component . '\'');
         }
 
+        /** @var array{submit:string} $buttons */
         $buttons = [];
         foreach ($model['bottomBar']['items'] ?? [] as $button) {
             $buttons[$button['value']] = $button['label'];
