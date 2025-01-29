@@ -136,7 +136,7 @@ class FormDataModelFactory implements FromReaderHandler
         if ($value === null) {
             return true;
         }
-        if (is_string($value) && strlen($value) === 0) {
+        if ($value === '') {
             return true;
         }
         if (is_array($value) && empty($value)) {
@@ -161,6 +161,10 @@ class FormDataModelFactory implements FromReaderHandler
 
         if ($type === 'string' && $format === 'html') {
             return 'html';
+        }
+
+        if ($type === 'string' && ($format === 'date' || $format === 'time' || $format === 'date-time')) {
+            return $format;
         }
 
         if ($type === 'boolean') {

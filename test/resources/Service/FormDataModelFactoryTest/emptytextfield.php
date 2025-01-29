@@ -8,8 +8,7 @@ return [
         "properties" => [
             "field" => [
                 "type" => "string",
-                "title" => "Date",
-                "format" => "date",
+                "title" => "Single-line text field",
             ],
         ],
     ],
@@ -19,24 +18,22 @@ return [
             [
                 "type" => "Control",
                 "scope" => "#/properties/field",
-                "label" => "Date",
+                "label" => "Single-line text field",
+                "options" => [
+                    "autocomplete" => "name",
+                    "spaceAfter" => true,
+                ],
             ],
         ],
     ],
     "data" => [
-        'field' => '2024-09-23',
+        'field' => '',
     ],
     "expected" => [
         [
             'type' => 'vertical_layout',
             'layout' => true,
             'items' => [
-                [
-                    'type' => 'date',
-                    'name' => 'field',
-                    'label' => 'Date',
-                    'value' => '2024-09-23',
-                ],
             ],
         ],
     ],

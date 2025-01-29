@@ -65,6 +65,16 @@
             {% endif %}
         </div>
     {% elseif item.value is defined %}
+        {% if item.type == 'date' %}
+            {% set value = item.value|date("m.d.Y") %}
+        {% elseif item.type == 'time' %}
+            {% set value = item.value|date("H:i") %}
+        {% elseif item.type == 'date-time' %}
+            {% set value = item.value|date("m.d.Y H:i") %}
+        {% else %}
+            {% set value = item.value %}
+        {% endif %}
+
         <div class="field">
             {% if item.label is defined and item.label is not empty %}
                 <span class="field-label">{{ item.label|escape }}</span>
@@ -72,7 +82,7 @@
             {% if item.htmlLabel.text is defined and item.htmlLabel.text is not empty %}
                 <span class="field-label">{{ item.htmlLabel.text|raw }}</span>
             {% endif %}
-            <span class="field-value">{{ item.value|escape }}</span>
+            <span class="field-value">{{ value|escape }}</span>
         </div>
     {% endif %}
 {% endfor %}
