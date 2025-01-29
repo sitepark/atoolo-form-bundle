@@ -32,4 +32,12 @@ class AtooloFormBundle extends AbstractBundle
         $loader->load('services.yaml');
         $loader->load('rate_limiter.yaml');
     }
+
+    /* TODO actually, it shouldn't work at all without it
+     * https://symfony.com/doc/current/bundles.html
+    public function getPath(): string
+    {
+        return __DIR__;
+    }
+    */
 }

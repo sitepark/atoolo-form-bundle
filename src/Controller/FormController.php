@@ -47,9 +47,10 @@ class FormController extends AbstractController
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
-    #[Route("/api/form/{lang}/{location}/{component}", name: "atoolo_form_definition", requirements: ['location' => '.+'], methods: ['GET'], format: 'json')]
-    public function definition(string $lang, string $location, string $component): Response
+    #[Route("/api/form/{_locale}/{location}/{component}", name: "atoolo_form_definition", requirements: ['location' => '.+'], methods: ['GET'], format: 'json')]
+    public function definition(string $_locale, string $location, string $component): Response
     {
+        $lang = $_locale;
         $definition = $this->loadDefinition($lang, $location, $component);
 
         $json = $this->serializer->serialize($definition, 'json', [
@@ -61,14 +62,15 @@ class FormController extends AbstractController
         return new JsonResponse(data: $json, json: true);
     }
 
-    #[Route("/api/form/{lang}/{location}/{component}", name: "atoolo_form_submit", requirements: ['location' => '.+'], methods: ['POST'], format: 'json')]
+    #[Route("/api/form/{_locale}/{location}/{component}", name: "atoolo_form_submit", requirements: ['location' => '.+'], methods: ['POST'], format: 'json')]
     public function submit(
-        string $lang,
+        string $_locale,
         string $location,
         string $component,
         Request $request,
     ): Response {
 
+        $lang = $_locale;
         $data = $this->requestBodyToObject($request);
 
         $formDefinition = $this->loadDefinition($lang, $location, $component);

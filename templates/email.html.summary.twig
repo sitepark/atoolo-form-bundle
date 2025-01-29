@@ -1,6 +1,5 @@
 <div class="section">
 {% for item in items %}
-
     {% if item.type == 'horizontal_layout' %}
         {% if item.items|length > 0 %}
             {% if item.label is defined and item.label is not empty %}
@@ -41,7 +40,7 @@
             {% endif %}
             <span class="field-value">{{ item.value.filename|escape }}</span>
         </div>
-    {% elseif items.options is defined and item.options is iterable %}
+    {% elseif item.options is defined and item.options is iterable %}
         <div class="field">
             {% if item.label is defined and item.label is not empty %}
                 <span class="field-label">{{ item.label|escape }}</span>
@@ -57,7 +56,7 @@
         </div>
     {% elseif item.type == 'checkbox' %}
         <div class="checkbox-field">
-            <input type="checkbox" checked disabled>
+            <input type="checkbox" {{ item.value ? 'checked' : '' }}  disabled>
             {% if item.label is defined and item.label is not empty %}
                 <span class="field-value">{{ item.label|escape }}</span>
             {% endif %}

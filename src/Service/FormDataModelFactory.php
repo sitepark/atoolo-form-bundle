@@ -73,11 +73,10 @@ class FormDataModelFactory implements FromReaderHandler
         string $name,
         mixed $value,
     ): void {
-        if (empty($value)) {
+        if ($this->isEmptyValue($value)) {
             if (!$this->includeEmptyFields) {
                 return;
             }
-            $value = '';
         }
 
         $type = $this->identifyType($control, $schema);
@@ -122,7 +121,7 @@ class FormDataModelFactory implements FromReaderHandler
         if (!empty($control->htmlLabel)) {
             $item['htmlLabel'] = $control->htmlLabel;
         }
-        if (!empty($value)) {
+        if (!$this->isEmptyValue($value)) {
             $item['value'] = $value;
         }
         if (!empty($options)) {
@@ -130,6 +129,17 @@ class FormDataModelFactory implements FromReaderHandler
         }
 
         $this->items[] = $item;
+    }
+
+    private function isEmptyValue(mixed $value): bool
+    {
+        if (is_string($value) && strlen($value) === 0) {
+            return true;
+        }
+        if (is_array($value) && empty($value)) {
+            return true;
+        }
+        return false;
     }
 
     /**
