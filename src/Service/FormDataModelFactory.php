@@ -133,6 +133,9 @@ class FormDataModelFactory implements FromReaderHandler
 
     private function isEmptyValue(mixed $value): bool
     {
+        if ($value === null) {
+            return true;
+        }
         if (is_string($value) && strlen($value) === 0) {
             return true;
         }
