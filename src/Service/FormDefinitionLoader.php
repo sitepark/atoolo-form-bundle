@@ -146,8 +146,8 @@ class FormDefinitionLoader
         ];
 
         /** @var JsonSchema $schema */
-        $schema = $this->translator->translate($jsonForms['schema'], ['label', 'title']);
-        $uiSchema = $this->translator->translate($jsonForms['uischema'], ['label']);
+        $schema = $this->translator->translate($jsonForms['schema']);
+        $uiSchema = $this->translator->translate($jsonForms['uischema']);
 
         return new FormDefinition(
             schema: $schema,

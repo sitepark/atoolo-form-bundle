@@ -14,15 +14,14 @@ class LabelTranslator
 
     /**
      * @param array<string,mixed|null> $data
-     * @param array<string> $fields
      * @return array<string,mixed|null>
      */
-    public function translate(array &$data, array $fields): array
+    public function translate(array &$data): array
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $this->translate($data[$key], $fields);
-            } elseif (is_string($value) && in_array($key, $fields, true)) {
+                $this->translate($data[$key]);
+            } elseif (is_string($value)) {
                 $data[$key] = $this->translateLabel($value);
             }
         }
