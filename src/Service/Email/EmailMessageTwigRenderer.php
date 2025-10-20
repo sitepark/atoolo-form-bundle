@@ -10,7 +10,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class EmailHtmlMessageTwigRenderer extends EmailHtmlMessageRenderer
+class EmailMessageTwigRenderer extends EmailMessageRenderer
 {
     public function __construct(
         private readonly Environment $twig,
@@ -22,12 +22,12 @@ class EmailHtmlMessageTwigRenderer extends EmailHtmlMessageRenderer
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function render(array $model): EmailHtmlMessageRendererResult
+    public function render(string $format, array $model): EmailHtmlMessageRendererResult
     {
-        $html = $this->twig->render('@AtooloForm/email.html.twig', $model);
+        $html = $this->twig->render('@AtooloForm/email.' . $format . '.twig', $model);
 
         return new EmailHtmlMessageRendererResult(
-            html: $html,
+            message: $html,
             attachments: $this->findAttachments($model['items']),
         );
     }

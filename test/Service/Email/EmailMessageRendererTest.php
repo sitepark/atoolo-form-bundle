@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Atoolo\Form\Test\Service\Email;
 
 use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
-use Atoolo\Form\Service\Email\EmailHtmlMessageRenderer;
+use Atoolo\Form\Service\Email\EmailMessageRenderer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(EmailHtmlMessageRenderer::class)]
-class EmailHtmlMessageRendererTest extends TestCase
+#[CoversClass(EmailMessageRenderer::class)]
+class EmailMessageRendererTest extends TestCase
 {
     public function testFindAttachments(): void
     {
@@ -30,22 +30,22 @@ class EmailHtmlMessageRendererTest extends TestCase
             ],
         ];
 
-        $renderer = new class extends EmailHtmlMessageRenderer {
+        $renderer = new class extends EmailMessageRenderer {
             /**
              * @param array $model
              * @return array<EmailMessageModelFileUpload>
              */
-            public function render(array $model): EmailHtmlMessageRendererResult
+            public function render(string $format, array $model): EmailHtmlMessageRendererResult
             {
                 return new EmailHtmlMessageRendererResult(
-                    html: 'html',
+                    message: 'html',
                     attachments: $this->findAttachments($model),
                 );
             }
         };
 
         $expected = new EmailHtmlMessageRendererResult(
-            html: 'html',
+            message: 'html',
             attachments: [
                 [
                     'filename' => 'file1',
@@ -56,7 +56,6 @@ class EmailHtmlMessageRendererTest extends TestCase
             ],
         );
 
-
-        $this->assertEquals($expected, $renderer->render($model), 'unexpected result');
+        $this->assertEquals($expected, $renderer->render('html', $model), 'unexpected result');
     }
 }

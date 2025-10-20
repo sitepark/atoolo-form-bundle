@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Atoolo\Form\Test\Service\Email;
 
 use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
-use Atoolo\Form\Service\Email\EmailHtmlMessageTwigRenderer;
+use Atoolo\Form\Service\Email\EmailMessageTwigRenderer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 
-#[CoversClass(EmailHtmlMessageTwigRenderer::class)]
-class EmailHtmlMessageTwigRendererTest extends TestCase
+#[CoversClass(EmailMessageTwigRenderer::class)]
+class EmailMessageTwigRendererTest extends TestCase
 {
     /**
      * @throws Exception
@@ -23,7 +23,7 @@ class EmailHtmlMessageTwigRendererTest extends TestCase
         $twig->method('render')
             ->willReturn('html');
 
-        $renderer = new EmailHtmlMessageTwigRenderer($twig);
+        $renderer = new EmailMessageTwigRenderer($twig);
 
         $model = [
             'items' => [
@@ -35,11 +35,10 @@ class EmailHtmlMessageTwigRendererTest extends TestCase
         ];
 
         $expected = new EmailHtmlMessageRendererResult(
-            html: 'html',
+            message: 'html',
             attachments: ['file1'],
         );
 
-        $this->assertEquals($expected, $renderer->render($model), 'unexpected result');
+        $this->assertEquals($expected, $renderer->render('html', $model), 'unexpected result');
     }
-
 }

@@ -6,13 +6,13 @@ namespace Atoolo\Form\Service\Email;
 
 use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
 
-abstract class EmailHtmlMessageRenderer
+abstract class EmailMessageRenderer
 {
     /**
      * @param EmailMessageModel $model
      * @return EmailHtmlMessageRendererResult
      */
-    abstract public function render(array $model): EmailHtmlMessageRendererResult;
+    abstract public function render(string $format, array $model): EmailHtmlMessageRendererResult;
 
     /**
      * @param array<EmailMessageModelItem> $model

@@ -6,10 +6,9 @@ namespace Atoolo\Form\Processor;
 
 use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Service\Email\CsvGenerator;
-use Atoolo\Form\Service\Email\EmailHtmlMessageRenderer;
+use Atoolo\Form\Service\Email\EmailMessageRenderer;
 use Atoolo\Form\Service\Email\EmailMessageModelFactory;
 use League\Csv\Exception;
-use Soundasleep\Html2Text;
 use Soundasleep\Html2TextException;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -22,7 +21,7 @@ class EmailSender implements SubmitProcessor
 {
     public function __construct(
         private readonly EmailMessageModelFactory $modelFactory,
-        private readonly EmailHtmlMessageRenderer $htmlMessageRenderer,
+        private readonly EmailMessageRenderer $htmlMessageRenderer,
         private readonly CsvGenerator $csvGenerator,
         private readonly MailerInterface $mailer,
     ) {}
@@ -38,17 +37,17 @@ class EmailSender implements SubmitProcessor
      *     showEmpty?: bool,
      *     attachCsv?: bool,
      * } $options
-     * @throws Html2TextException
      * @throws TransportExceptionInterface
      * @throws Exception
      */
     public function process(FormSubmission $submission, array $options): FormSubmission
     {
         $rendererModel = $this->modelFactory->create($submission, $options['showEmpty'] ?? false);
-        $result = $this->htmlMessageRenderer->render($rendererModel);
-        $html = $result->html;
-        // TODO: implement e separate renderer for text
-        $text = Html2Text::convert($html);
+        $htmlResult = $this->htmlMessageRenderer->render('html', $rendererModel);
+        $html = $htmlResult->message;
+
+        $textResult = $this->htmlMessageRenderer->render('text', $rendererModel);
+        $text = $textResult->message;
 
         $email = new Email();
         foreach ($options['from'] as $from) {
@@ -64,14 +63,14 @@ class EmailSender implements SubmitProcessor
             $email->bcc(new Address($bcc['address'], $bcc['name']));
         }
 
-        $email->subject($options['subject'] ?? $result->subject ?? '');
+        $email->subject($options['subject'] ?? $htmlResult->subject ?? '');
 
         if (($options['format'] ?? 'html') === 'html') {
             $email ->html($html);
         }
         $email->text($text);
 
-        foreach ($result->attachments as $attachment) {
+        foreach ($htmlResult->attachments as $attachment) {
             $email->attach($attachment['data'], $attachment['filename'], $attachment['contentType']);
         }
 

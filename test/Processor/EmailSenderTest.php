@@ -9,7 +9,7 @@ use Atoolo\Form\Dto\FormDefinition;
 use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Processor\EmailSender;
 use Atoolo\Form\Service\Email\CsvGenerator;
-use Atoolo\Form\Service\Email\EmailHtmlMessageRenderer;
+use Atoolo\Form\Service\Email\EmailMessageRenderer;
 use Atoolo\Form\Service\Email\EmailMessageModelFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
@@ -33,8 +33,8 @@ class EmailSenderTest extends TestCase
     public function testSend(): void
     {
         $modelFactory = $this->createStub(EmailMessageModelFactory::class);
-        $result = new EmailHtmlMessageRendererResult(
-            html: '<p>test</p>',
+        $htmlResult = new EmailHtmlMessageRendererResult(
+            message: '<p>test</p>',
             attachments: [
                 [
                     'filename' => 'text.txt',
@@ -43,9 +43,15 @@ class EmailSenderTest extends TestCase
                 ],
             ],
         );
-        $htmlMessageRenderer = $this->createStub(EmailHtmlMessageRenderer::class);
+        $textResult = new EmailHtmlMessageRendererResult(
+            message: 'test',
+            attachments: [],
+        );
+
+        $htmlMessageRenderer = $this->createStub(EmailMessageRenderer::class);
         $htmlMessageRenderer->method('render')
-            ->willReturn($result);
+            ->willReturn($htmlResult, $textResult);
+
         $csvGenerator = $this->createStub(CsvGenerator::class);
         $csvGenerator->method('generate')
             ->willReturn('csv');

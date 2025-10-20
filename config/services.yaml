@@ -25,4 +25,4 @@ services:
   Atoolo\Form\Processor\EmailSender:
     arguments:
       - '@Atoolo\Form\Service\Email\EmailMessageModelFactory'
-      - '@Atoolo\Form\Service\Email\EmailHtmlMessageTwigRenderer'
+      - '@Atoolo\Form\Service\Email\EmailMessageTwigRenderer'

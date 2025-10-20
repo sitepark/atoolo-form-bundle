@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Atoolo\Form\Test\Service\Email;
 
 use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
-use Atoolo\Form\Service\Email\EmailHtmlMessageTwigMjmlRenderer;
+use Atoolo\Form\Service\Email\EmailMessageTwigMjmlRenderer;
 use Atoolo\Form\Service\Email\MjmlRenderer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 
-#[CoversClass(EmailHtmlMessageTwigMjmlRenderer::class)]
-class EmailHtmlMessageTwigMjmlRendererTest extends TestCase
+#[CoversClass(EmailMessageTwigMjmlRenderer::class)]
+class EmailMessageTwigMjmlRendererTest extends TestCase
 {
     /**
      * @throws Exception
@@ -27,11 +27,11 @@ class EmailHtmlMessageTwigMjmlRendererTest extends TestCase
         $mjml->method('render')
             ->willReturn('html');
 
-        $renderer = new EmailHtmlMessageTwigMjmlRenderer($twig, $mjml);
+        $renderer = new EmailMessageTwigMjmlRenderer($twig, $mjml);
         $expected = new EmailHtmlMessageRendererResult(
-            html: 'html',
+            message: 'html',
             attachments: [],
         );
-        $this->assertEquals($expected, $renderer->render(['items' => []]), 'unexpected result');
+        $this->assertEquals($expected, $renderer->render('html', ['items' => []]), 'unexpected result');
     }
 }
