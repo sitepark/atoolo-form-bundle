@@ -11,6 +11,7 @@ use Atoolo\Form\Dto\UISchema\Type;
 use Atoolo\Form\Exception\FormNotFoundException;
 use Atoolo\Form\Service\FormDefinitionLoader;
 use Atoolo\Form\Service\SubmitHandler;
+use Atoolo\Resource\DataBag;
 use Atoolo\Resource\Exception\ResourceNotFoundException;
 use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceLanguage;
@@ -295,6 +296,7 @@ class FormControllerTest extends TestCase
             '',
             '',
             $translationLocales,
+            new DataBag([]),
             $this->createStub(ResourceTenant::class),
         );
     }

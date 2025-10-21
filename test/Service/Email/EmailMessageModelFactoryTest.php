@@ -32,6 +32,7 @@ class EmailMessageModelFactoryTest extends TestCase
             '',
             'Test Tenant',
             '',
+            '',
             new DataBag([]),
         );
         $channel = new ResourceChannel(
@@ -47,6 +48,7 @@ class EmailMessageModelFactoryTest extends TestCase
             '',
             '',
             [],
+            new DataBag([]),
             $tenant,
         );
 
