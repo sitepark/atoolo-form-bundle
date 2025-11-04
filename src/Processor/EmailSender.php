@@ -49,6 +49,11 @@ class EmailSender implements SubmitProcessor
         $textResult = $this->htmlMessageRenderer->render('text', $rendererModel);
         $text = $textResult->message;
 
+        $selectionKey = $this->findDelivererSelectionKey($rendererModel);
+        if ($selectionKey !== null && isset($options['selectable'][$selectionKey]['to'])) {
+            $options['to'] = $options['selectable'][$selectionKey]['to'];
+        }
+
         $email = new Email();
         foreach ($options['from'] as $from) {
             $email->from(new Address($from['address'], $from['name']));
@@ -83,5 +88,30 @@ class EmailSender implements SubmitProcessor
         $this->mailer->send($email);
 
         return $submission;
+    }
+
+    private function findDelivererSelectionKey(array $model): ?string
+    {
+        foreach ($model as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+            if (isset($item['deliverer'])) {
+                return $item['deliverer'];
+            }
+            if (is_array($item['items'])) {
+                $result = $this->findDelivererSelectionKey($item['items']);
+                if ($result !== null) {
+                    return $result;
+                }
+            } else {
+                $result = $this->findDelivererSelectionKey($item);
+                if ($result !== null) {
+                    return $result;
+                }
+            }
+        }
+
+        return null;
     }
 }

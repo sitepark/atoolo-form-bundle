@@ -88,6 +88,7 @@ class FormDataModelFactory implements FromReaderHandler
         }
 
         $options = null;
+        $deliverer = null;
 
         $optionsFromSchema = $schema['items']['oneOf'] ?? $schema['oneOf'] ?? null;
         if ($optionsFromSchema !== null) {
@@ -104,6 +105,9 @@ class FormDataModelFactory implements FromReaderHandler
                 ];
                 if ($isSelected) {
                     $value[] = $label;
+                    if (($schema['deliverer'] ?? false) === true) {
+                        $deliverer = $option['const'];
+                    }
                 }
             }
             if (($schema['type'] ?? '') === 'string') {
@@ -126,6 +130,9 @@ class FormDataModelFactory implements FromReaderHandler
         }
         if (!empty($options)) {
             $item['options'] = $options;
+        }
+        if (!empty($deliverer)) {
+            $item['deliverer'] = $deliverer;
         }
 
         $this->items[] = $item;

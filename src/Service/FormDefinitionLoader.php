@@ -28,6 +28,9 @@ use Symfony\Component\Serializer\Serializer;
  *     to?: array<string,string>,
  *     cc?: array<string,string>,
  *     bcc?: array<string,string>,
+ *     selectable?: array{
+ *          to?: array<string,string>
+ *     },
  *     subject?: string,
  *     format?: string,
  *     attachCsv?: bool,
@@ -77,6 +80,12 @@ use Symfony\Component\Serializer\Serializer;
  *      format: string,
  *      attachCsv: bool,
  *      showEmpty: bool
+ *      selectable: array<string, array{
+ *         to: array{
+ *            address: string,
+ *            name: string,
+ *        },
+ *     }>,
  *  }
  */
 class FormDefinitionLoader
@@ -187,6 +196,13 @@ class FormDefinitionLoader
             $bcc[] = ['address' => $address, 'name' => $name];
         }
 
+        $selectable = [];
+        foreach ($deliverer['selectable'] ?? [] as $key => $config) {
+            foreach ($config['to'] as $address => $name) {
+                $selectable[$key]['to'][] = ['address' => $address, 'name' => $name];
+            }
+        }
+
         return [
             'from' => $from,
             'to' => $to,
@@ -196,6 +212,7 @@ class FormDefinitionLoader
             'format' => $deliverer['format'] ?? 'html',
             'attachCsv' => $deliverer['attachCsv'] ?? false,
             'showEmpty' => $deliverer['showEmpty'] ?? false,
+            'selectable' => $selectable,
         ];
     }
 
