@@ -293,6 +293,7 @@ class FormDefinitionLoaderTest extends TestCase
                     'format' => 'plain',
                     'attachCsv' => false,
                     'showEmpty' => false,
+                    'selectable' => [],
                 ],
             ],
         );
