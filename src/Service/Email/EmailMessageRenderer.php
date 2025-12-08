@@ -20,17 +20,22 @@ abstract class EmailMessageRenderer
      */
     protected function findAttachments(array $model): array
     {
-        $attachments = [];
+        return array_map(static function ($element) {
+            return $element['value'];
+        }, $this->findByType($model, 'file'));
+    }
+
+    protected function findByType(array $model, string $type): array
+    {
+        $results = [];
         foreach ($model as $item) {
-            $type = $item['type'] ?? '';
-            if ($type === 'file') {
-                /** @var EmailMessageModelControlItem $item */
-                /** @var EmailMessageModelFileUpload $value */
-                $value = $item['value'];
-                $attachments[] = $value;
+            if (($item['type'] ?? '') === $type) {
+                $results[] =  [$item];
+            } elseif (isset($item['items']) && is_array($item['items'])) {
+                $results[] = $this->findByType($item['items'], $type);
             }
         }
 
-        return $attachments;
+        return array_merge(...$results);
     }
 }
