@@ -56,16 +56,16 @@ class EmailSender implements SubmitProcessor
 
         $email = new Email();
         foreach ($options['from'] as $from) {
-            $email->from(new Address($from['address'], $from['name']));
+            $email->from(new Address($from['address'], $from['name'] ?? ''));
         }
         foreach ($options['to'] as $to) {
-            $email->to(new Address($to['address'], $to['name']));
+            $email->to(new Address($to['address'], $to['name'] ?? ''));
         }
         foreach ($options['cc'] ?? [] as $cc) {
-            $email->cc(new Address($cc['address'], $cc['name']));
+            $email->cc(new Address($cc['address'], $cc['name'] ?? ''));
         }
         foreach ($options['bcc'] ?? [] as $bcc) {
-            $email->bcc(new Address($bcc['address'], $bcc['name']));
+            $email->bcc(new Address($bcc['address'], $bcc['name'] ?? ''));
         }
 
         $email->subject($options['subject'] ?? $htmlResult->subject ?? '');
