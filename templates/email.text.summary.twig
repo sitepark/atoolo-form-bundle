@@ -60,11 +60,11 @@
 {% endif %}
 {% elseif item.value is defined %}
 {% if item.type == 'date' %}
-{% set value = item.value|date("m.d.Y") %}
+{% set value = item.value|date("d.m.Y") %}
 {% elseif item.type == 'time' %}
 {% set value = item.value|date("H:i") %}
 {% elseif item.type == 'date-time' %}
-{% set value = item.value|date("m.d.Y H:i") %}
+{% set value = item.value|date("d.m.Y H:i") %}
 {% else %}
 {% set value = item.value %}
 {% endif %}
