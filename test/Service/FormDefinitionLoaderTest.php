@@ -303,13 +303,10 @@ class FormDefinitionLoaderTest extends TestCase
 
     private function setContentForResourceLoaderStub(array $content): void
     {
-        $this->resourceLoader->method('load')->willReturn(new Resource(
-            '/test',
-            '',
-            '',
-            '',
-            ResourceLanguage::of('en'),
-            new DataBag(['content' => $content]),
-        ));
+        $this->resourceLoader->method('load')->willReturn(Resource::create([
+            'url' => '/test',
+            'locale' => 'en_US',
+            'content' => $content,
+        ]));
     }
 }
