@@ -77,11 +77,10 @@ class FormReader
                 continue;
             }
 
-            if ($schema !== null && isset($schema[$key])) {
-                $schema = $schema[$key];
-            } else {
-                $schema = null;
-            }
+            $subSchema = $schema !== null && isset($schema[$key])
+                ? $schema[$key]
+                : null;
+            $schema = is_array($subSchema) ? $subSchema : null;
 
             if ($key === 'properties') {
                 continue;

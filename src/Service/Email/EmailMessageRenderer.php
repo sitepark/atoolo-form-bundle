@@ -20,11 +20,17 @@ abstract class EmailMessageRenderer
      */
     protected function findAttachments(array $model): array
     {
-        return array_map(static function ($element) {
-            return $element['value'];
+        return array_map(static function (array $element) {
+            /** @var EmailMessageModelFileUpload $upload */
+            $upload = $element['value'];
+            return $upload;
         }, $this->findByType($model, 'file'));
     }
 
+    /**
+     * @param array<array<string,mixed>> $model
+     * @return list<array<string,mixed>>
+     */
     protected function findByType(array $model, string $type): array
     {
         $results = [];
@@ -32,7 +38,9 @@ abstract class EmailMessageRenderer
             if (($item['type'] ?? '') === $type) {
                 $results[] =  [$item];
             } elseif (isset($item['items']) && is_array($item['items'])) {
-                $results[] = $this->findByType($item['items'], $type);
+                /** @var array<array<string,mixed>> $nested */
+                $nested = $item['items'];
+                $results[] = $this->findByType($nested, $type);
             }
         }
 
