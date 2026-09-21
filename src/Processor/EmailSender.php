@@ -36,6 +36,9 @@ class EmailSender implements SubmitProcessor
      *     format?: 'html'|'text',
      *     showEmpty?: bool,
      *     attachCsv?: bool,
+     *     selectable?: array<string, array{
+     *         to: list<array{address: string, name: string}>,
+     *     }>,
      * } $options
      * @throws TransportExceptionInterface
      * @throws Exception
@@ -56,16 +59,16 @@ class EmailSender implements SubmitProcessor
 
         $email = new Email();
         foreach ($options['from'] as $from) {
-            $email->addFrom(new Address($from['address'], $from['name'] ?? ''));
+            $email->addFrom(new Address($from['address'], $from['name']));
         }
         foreach ($options['to'] as $to) {
-            $email->addTo(new Address($to['address'], $to['name'] ?? ''));
+            $email->addTo(new Address($to['address'], $to['name']));
         }
         foreach ($options['cc'] ?? [] as $cc) {
-            $email->addCc(new Address($cc['address'], $cc['name'] ?? ''));
+            $email->addCc(new Address($cc['address'], $cc['name']));
         }
         foreach ($options['bcc'] ?? [] as $bcc) {
-            $email->addBcc(new Address($bcc['address'], $bcc['name'] ?? ''));
+            $email->addBcc(new Address($bcc['address'], $bcc['name']));
         }
 
         $email->subject($options['subject'] ?? $htmlResult->subject ?? '');
@@ -90,6 +93,9 @@ class EmailSender implements SubmitProcessor
         return $submission;
     }
 
+    /**
+     * @param array<mixed> $model
+     */
     private function findDelivererSelectionKey(array $model): ?string
     {
         foreach ($model as $item) {
@@ -97,7 +103,8 @@ class EmailSender implements SubmitProcessor
                 continue;
             }
             if (isset($item['deliverer'])) {
-                return $item['deliverer'];
+                $deliverer = $item['deliverer'];
+                return is_string($deliverer) ? $deliverer : null;
             }
             if (isset($item['items']) && is_array($item['items'])) {
                 $result = $this->findDelivererSelectionKey($item['items']);

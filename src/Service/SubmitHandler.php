@@ -27,9 +27,9 @@ class SubmitHandler
         #[Autowire(param: 'atoolo_form.default_processors')]
         private readonly array $defaultProcessorKeys,
     ) {
-        $this->processors = $processors instanceof \Traversable ?
-            iterator_to_array($processors) :
-            $processors;
+        $this->processors = $processors instanceof \Traversable
+            ? iterator_to_array($processors)
+            : $processors;
     }
 
     public function handle(FormSubmission $submit): void

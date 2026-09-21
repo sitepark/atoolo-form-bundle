@@ -53,6 +53,7 @@ parameters:
             array{
                 type?: string,
                 format?: string,
+                deliverer?: bool,
                 oneOf?: array<array{const: string, title: string}>,
                 items?: array{
                     oneOf?: array<array{const: string, title: string}>,

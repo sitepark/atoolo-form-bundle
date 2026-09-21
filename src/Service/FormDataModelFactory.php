@@ -67,6 +67,9 @@ class FormDataModelFactory implements FromReaderHandler
         $this->items[] = $data;
     }
 
+    /**
+     * @param JsonSchema $schema
+     */
     public function control(
         Control $control,
         array $schema,
