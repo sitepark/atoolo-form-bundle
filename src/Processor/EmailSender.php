@@ -97,7 +97,8 @@ class EmailSender implements SubmitProcessor
                 continue;
             }
             if (isset($item['deliverer'])) {
-                return $item['deliverer'];
+                $deliverer = $item['deliverer'];
+                return is_string($deliverer) ? $deliverer : null;
             }
             if (isset($item['items']) && is_array($item['items'])) {
                 $result = $this->findDelivererSelectionKey($item['items']);

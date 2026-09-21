@@ -20,7 +20,9 @@ class LabelTranslator
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $this->translate($data[$key]);
+                /** @var array<string,mixed> $nested */
+                $nested = &$data[$key];
+                $this->translate($nested);
             } elseif (is_string($value)) {
                 $data[$key] = $this->translateLabel($value);
             }
@@ -36,7 +38,7 @@ class LabelTranslator
 
         preg_match('/\$\{([^}]+)}/', $label, $matches);
         if ($matches) {
-            $key = $matches[1] ?? '';
+            $key = $matches[1];
             $translated = $this->translator->trans($key, domain: 'form');
             return $translated === '' ? $label : $translated;
         }

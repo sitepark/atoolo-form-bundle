@@ -23,8 +23,8 @@ class PlatformTest extends TestCase
     {
         $platform = new Platform();
         $this->assertEquals(
-            ['a' =>
-                [
+            ['a'
+                => [
                     'b' => ['c' => 'd'],
                     'e' => [
                         [ 'f' => 'g' ],
