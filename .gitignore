@@ -1,5 +1,6 @@
 /vendor
 /vendor.orig
+composer.lock
 .idea
 /var/cache/*
 !var/cache/.gitkeep
@@ -8,3 +9,4 @@
 /tools
 .phpactor.json
 *.swp
+.claude/
