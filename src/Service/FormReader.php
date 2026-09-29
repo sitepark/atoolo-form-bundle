@@ -17,7 +17,7 @@ class FormReader
     public function __construct(
         public readonly FormDefinition $formDefinition,
         public readonly array $data,
-        public readonly FromReaderHandler $handler,
+        public readonly FormReaderHandler $handler,
     ) {}
 
     public function read(): void

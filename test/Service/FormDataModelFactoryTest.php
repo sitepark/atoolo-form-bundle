@@ -8,6 +8,7 @@ use Atoolo\Form\Dto\FormData\UploadFile;
 use Atoolo\Form\Dto\FormDefinition;
 use Atoolo\Form\Dto\UISchema\Layout;
 use Atoolo\Form\Service\DataUrlParser;
+use Atoolo\Form\Service\FormDataModelCollector;
 use Atoolo\Form\Service\FormDataModelFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -24,6 +25,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[CoversClass(FormDataModelFactory::class)]
+#[CoversClass(FormDataModelCollector::class)]
 class FormDataModelFactoryTest extends TestCase
 {
     private static string $RESOURCE_PATH = __DIR__ . '/../resources/Service/FormDataModelFactoryTest';

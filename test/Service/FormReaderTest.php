@@ -9,7 +9,7 @@ use Atoolo\Form\Dto\UISchema\Control;
 use Atoolo\Form\Dto\UISchema\Layout;
 use Atoolo\Form\Dto\UISchema\Type;
 use Atoolo\Form\Service\FormReader;
-use Atoolo\Form\Service\FromReaderHandler;
+use Atoolo\Form\Service\FormReaderHandler;
 use Atoolo\Form\Service\JsonSchemaValidator\Extended\Draft202012Extended;
 use Atoolo\Resource\ResourceLocation;
 use JsonSchema\Validator;
@@ -46,7 +46,7 @@ class FormReaderTest extends TestCase
             'field-1' => 'value',
         ];
 
-        $handler = $this->createMock(FromReaderHandler::class);
+        $handler = $this->createMock(FormReaderHandler::class);
         $handler->expects($this->once())
             ->method('startLayout')
             ->with($uischema);
@@ -85,7 +85,7 @@ class FormReaderTest extends TestCase
             'field-1' => 'value',
         ];
 
-        $handler = $this->createMock(FromReaderHandler::class);
+        $handler = $this->createMock(FormReaderHandler::class);
         $handler->expects($this->once())
             ->method('startLayout')
             ->with($uischema);

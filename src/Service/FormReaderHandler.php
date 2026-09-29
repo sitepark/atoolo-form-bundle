@@ -7,7 +7,7 @@ namespace Atoolo\Form\Service;
 use Atoolo\Form\Dto\UISchema\Control;
 use Atoolo\Form\Dto\UISchema\Layout;
 
-interface FromReaderHandler
+interface FormReaderHandler
 {
     public function startLayout(Layout $layout): void;
 
