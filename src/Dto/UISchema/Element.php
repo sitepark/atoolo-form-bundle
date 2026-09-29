@@ -22,6 +22,5 @@ abstract class Element
 {
     public function __construct(
         public readonly Type $type,
-        public ?Role $rule = null,
     ) {}
 }
