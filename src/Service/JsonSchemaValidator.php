@@ -56,13 +56,7 @@ class JsonSchemaValidator
         $type = $constraint->getType();
         $name = $constraint->getName();
 
-        $formatResolver->registerCallable(
-            $type,
-            $name,
-            function ($data, $schema) use ($constraint) {
-                return $constraint->check($data, $schema);
-            },
-        );
+        $formatResolver->registerCallable($type, $name, $constraint->check(...));
     }
 
 
