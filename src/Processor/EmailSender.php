@@ -8,8 +8,7 @@ use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Service\Email\CsvGenerator;
 use Atoolo\Form\Service\Email\EmailMessageRenderer;
 use Atoolo\Form\Service\Email\EmailMessageModelFactory;
-use League\Csv\Exception;
-use Soundasleep\Html2TextException;
+use League\Csv\Exception as CsvException;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -41,7 +40,7 @@ class EmailSender implements SubmitProcessor
      *     }>,
      * } $options
      * @throws TransportExceptionInterface
-     * @throws Exception
+     * @throws CsvException
      */
     public function process(FormSubmission $submission, array $options): FormSubmission
     {
@@ -71,7 +70,7 @@ class EmailSender implements SubmitProcessor
             $email->addBcc(new Address($bcc['address'], $bcc['name']));
         }
 
-        $email->subject($options['subject'] ?? $htmlResult->subject ?? '');
+        $email->subject($options['subject'] ?? '');
 
         if (($options['format'] ?? 'html') === 'html') {
             $email ->html($html);

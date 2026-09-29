@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Test\Service\Email;
 
-use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
+use Atoolo\Form\Dto\Email\EmailMessageRendererResult;
 use Atoolo\Form\Service\Email\EmailMessageRenderer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -35,16 +35,16 @@ class EmailMessageRendererTest extends TestCase
              * @param array $model
              * @return array<EmailMessageModelFileUpload>
              */
-            public function render(string $format, array $model): EmailHtmlMessageRendererResult
+            public function render(string $format, array $model): EmailMessageRendererResult
             {
-                return new EmailHtmlMessageRendererResult(
+                return new EmailMessageRendererResult(
                     message: 'html',
                     attachments: $this->findAttachments($model),
                 );
             }
         };
 
-        $expected = new EmailHtmlMessageRendererResult(
+        $expected = new EmailMessageRendererResult(
             message: 'html',
             attachments: [
                 [

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Test\Service\Email;
 
-use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
+use Atoolo\Form\Dto\Email\EmailMessageRendererResult;
 use Atoolo\Form\Service\Email\EmailMessageTwigRenderer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
@@ -34,7 +34,7 @@ class EmailMessageTwigRendererTest extends TestCase
             ],
         ];
 
-        $expected = new EmailHtmlMessageRendererResult(
+        $expected = new EmailMessageRendererResult(
             message: 'html',
             attachments: ['file1'],
         );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atoolo\Form\Test\Processor;
 
-use Atoolo\Form\Dto\Email\EmailHtmlMessageRendererResult;
+use Atoolo\Form\Dto\Email\EmailMessageRendererResult;
 use Atoolo\Form\Dto\FormDefinition;
 use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Processor\EmailSender;
@@ -33,7 +33,7 @@ class EmailSenderTest extends TestCase
     public function testSend(): void
     {
         $modelFactory = $this->createStub(EmailMessageModelFactory::class);
-        $htmlResult = new EmailHtmlMessageRendererResult(
+        $htmlResult = new EmailMessageRendererResult(
             message: '<p>test</p>',
             attachments: [
                 [
@@ -43,7 +43,7 @@ class EmailSenderTest extends TestCase
                 ],
             ],
         );
-        $textResult = new EmailHtmlMessageRendererResult(
+        $textResult = new EmailMessageRendererResult(
             message: 'test',
             attachments: [],
         );

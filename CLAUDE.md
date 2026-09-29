@@ -105,7 +105,7 @@ composer report:phpstan
 - **Core DTOs**: FormDefinition, FormSubmission, UploadFile
 - **UISchema DTOs** (`Dto/UISchema/`): Element, Layout, Control, Annotation, Type
   - Polymorphic deserialization using Symfony Serializer discriminator mapping
-- **Email DTOs** (`Dto/Email/`): EmailHtmlMessageRendererResult
+- **Email DTOs** (`Dto/Email/`): EmailMessageRendererResult
 
 #### Services (`src/Service/`)
 - **FormDefinitionLoader** - Loads and transforms form configurations from Atoolo resources (FormEditor model → JSON Forms format)
@@ -117,8 +117,8 @@ composer report:phpstan
 
 **Email Services** (`src/Service/Email/`):
 - **EmailMessageModelFactory** - Builds email data model from form submissions
-- **EmailHtmlMessageRenderer** (abstract) - Base email rendering interface
-- **EmailHtmlMessageTwigRenderer** - Twig-based email rendering
+- **EmailMessageRenderer** (abstract) - Base email rendering interface
+- **EmailMessageTwigRenderer** - Twig-based email rendering
 - **CsvGenerator** - Creates CSV attachments from form data
 
 **Validation Services** (`src/Service/JsonSchemaValidator/`):
