@@ -22,7 +22,7 @@ class FormDefinition
      *     headline: string,
      *     text: string,
      * }>|null $messages
-     * @param array<string, array<string,mixed>>|null $processors
+     * @param array<string, array<string,mixed>> $processors Options per processor key
      */
     public function __construct(
         public readonly array $schema,
@@ -33,6 +33,6 @@ class FormDefinition
         public readonly string $lang,
         public readonly string $component,
         #[Ignore]
-        public readonly ?array $processors,
+        public readonly array $processors = [],
     ) {}
 }

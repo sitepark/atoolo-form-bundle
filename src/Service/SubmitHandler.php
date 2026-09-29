@@ -34,7 +34,7 @@ class SubmitHandler
 
     public function handle(FormSubmission $submit): void
     {
-        $processorsOptions = $this->getResultingOptions($submit->formDefinition->processors ?? []);
+        $processorsOptions = $this->getResultingOptions($submit->formDefinition->processors);
 
         foreach ($this->processors as $key => $processor) {
 

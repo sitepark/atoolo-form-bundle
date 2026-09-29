@@ -13,9 +13,9 @@ class Control extends Element
      * @param array<string,mixed> $options https://jsonforms.io/docs/uischema/controls#options
      */
     public function __construct(
-        public string $scope,
-        public string|bool|null $label = null,
-        public ?array $htmlLabel = null, // custom property
+        public readonly string $scope,
+        public readonly string|bool|null $label = null,
+        public readonly ?array $htmlLabel = null, // custom property
         public readonly array $options = [],
     ) {
         parent::__construct(Type::CONTROL);

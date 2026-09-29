@@ -87,7 +87,7 @@ class FormDataModelFactoryTest extends TestCase
             messages: null,
             lang: '',
             component: '',
-            processors: null,
+            processors: [],
         );
         return $this->formDataModelFactory->create($formDefinition, $data, $includeEmptyFields);
     }
