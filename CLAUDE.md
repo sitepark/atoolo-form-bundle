@@ -143,7 +143,7 @@ interface SubmitProcessor {
 5. **JsonSchemaValidator** - Schema validation
 6. **EmailSender** - Email delivery via Symfony Mailer
 
-Processors can set `$submission->approved = true` to skip subsequent processors.
+Processors can set `$submission->approved = true` to skip the abuse protection of subsequent processors (IP blocking, rate limiting); validation and email delivery still run.
 
 ### Data Flow Patterns
 
