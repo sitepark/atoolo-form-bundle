@@ -6,8 +6,9 @@ namespace Atoolo\Form\Service\Email;
 
 use Atoolo\Form\Dto\FormSubmission;
 use Atoolo\Form\Service\FormDataModelFactory;
-use Atoolo\Form\Service\Platform;
 use Atoolo\Resource\ResourceChannel;
+use JsonException;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class EmailMessageModelFactory
@@ -16,22 +17,25 @@ class EmailMessageModelFactory
         #[Autowire(service: 'atoolo_resource.resource_channel')]
         private readonly ResourceChannel $channel,
         private readonly FormDataModelFactory $formDataModelFactory,
-        private readonly Platform $platform,
+        private readonly ClockInterface $clock,
     ) {}
 
     /**
      * @param FormSubmission $submission
      * @param bool $includeEmptyFields
      * @return EmailMessageModel
+     * @throws JsonException
      */
     public function create(FormSubmission $submission, bool $includeEmptyFields): array
     {
+        /** @var array<string,mixed> $data */
+        $data = json_decode(json_encode($submission->data, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $items = $this->formDataModelFactory->create(
             $submission->formDefinition,
-            $this->platform->objectToArrayRecursive((array) $submission->data),
+            $data,
             $includeEmptyFields,
         );
-        $dateTime = $this->platform->datetime();
+        $dateTime = $this->clock->now();
         return [
             'lang' => $submission->formDefinition->lang,
             'url' => 'https://' . $this->channel->serverName,

@@ -30,7 +30,6 @@ class JsonSchemaValidator
         private readonly Validator $validator,
         #[AutowireIterator('atoolo_form.jsonSchemaConstraint')]
         iterable $constraints,
-        private readonly Platform $platform,
     ) {
         foreach ($constraints as $constraint) {
             $this->registerConstraint($constraint);
@@ -56,13 +55,7 @@ class JsonSchemaValidator
         $type = $constraint->getType();
         $name = $constraint->getName();
 
-        $formatResolver->registerCallable(
-            $type,
-            $name,
-            function ($data, $schema) use ($constraint) {
-                return $constraint->check($data, $schema);
-            },
-        );
+        $formatResolver->registerCallable($type, $name, $constraint->check(...));
     }
 
 
@@ -72,7 +65,7 @@ class JsonSchemaValidator
      */
     public function validate(array $schema, object $data): void
     {
-        $schemaJson = $this->platform->arrayToObjectRecursive($schema);
+        $schemaJson = (object) json_decode(json_encode($schema, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         $result = $this->validator->validate($data, $schemaJson);
 

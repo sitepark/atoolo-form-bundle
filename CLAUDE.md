@@ -84,7 +84,7 @@ composer report:phpstan
 ┌──────────────────┴──────────────────────────────────────┐
 │              Processor Pipeline Layer                    │
 │  IpAllower → IpBlocker → IpLimiter → SubmitLimiter     │
-│  → SpamDetector → JsonSchemaValidator → EmailSender    │
+│  → JsonSchemaValidator → EmailSender                   │
 └──────────────────┬──────────────────────────────────────┘
                    │
 ┌──────────────────┴──────────────────────────────────────┐
@@ -103,9 +103,9 @@ composer report:phpstan
 
 #### DTOs (`src/Dto/`)
 - **Core DTOs**: FormDefinition, FormSubmission, UploadFile
-- **UISchema DTOs** (`Dto/UISchema/`): Element, Layout, Control, Annotation, Type, Role
+- **UISchema DTOs** (`Dto/UISchema/`): Element, Layout, Control, Annotation, Type
   - Polymorphic deserialization using Symfony Serializer discriminator mapping
-- **Email DTOs** (`Dto/Email/`): EmailHtmlMessageRendererResult
+- **Email DTOs** (`Dto/Email/`): EmailMessageRendererResult
 
 #### Services (`src/Service/`)
 - **FormDefinitionLoader** - Loads and transforms form configurations from Atoolo resources (FormEditor model → JSON Forms format)
@@ -117,11 +117,9 @@ composer report:phpstan
 
 **Email Services** (`src/Service/Email/`):
 - **EmailMessageModelFactory** - Builds email data model from form submissions
-- **EmailHtmlMessageRenderer** (abstract) - Base email rendering interface
-- **EmailHtmlMessageTwigRenderer** - Twig-based email rendering
-- **EmailHtmlMessageTwigMjmlRenderer** - MJML-based responsive email rendering
+- **EmailMessageRenderer** (abstract) - Base email rendering interface
+- **EmailMessageTwigRenderer** - Twig-based email rendering
 - **CsvGenerator** - Creates CSV attachments from form data
-- **MjmlRenderer** - MJML compilation wrapper
 
 **Validation Services** (`src/Service/JsonSchemaValidator/`):
 - **FormatConstraint** interface - Custom JSON Schema format validators
@@ -140,13 +138,12 @@ interface SubmitProcessor {
 **Available Processors** (execution order by priority):
 1. **IpLimiter** (80) - Rate limits by IP address (Symfony RateLimiter)
 2. **SubmitLimiter** (70) - Global submission rate limiting
-3. **SpamDetector** - Spam detection logic
-4. **IpAllower** - IP whitelist validation
-5. **IpBlocker** - IP blacklist validation
-6. **JsonSchemaValidator** - Schema validation
-7. **EmailSender** - Email delivery via Symfony Mailer
+3. **IpAllower** - IP whitelist validation
+4. **IpBlocker** - IP blacklist validation
+5. **JsonSchemaValidator** - Schema validation
+6. **EmailSender** - Email delivery via Symfony Mailer
 
-Processors can set `$submission->approved = true` to skip subsequent processors.
+Processors can set `$submission->approved = true` to skip the abuse protection of subsequent processors (IP blocking, rate limiting); validation and email delivery still run.
 
 ### Data Flow Patterns
 
@@ -167,7 +164,7 @@ Processors can set `$submission->approved = true` to skip subsequent processors.
 **Email Generation:**
 1. FormDataModelFactory extracts data from submission
 2. EmailMessageModelFactory creates structured email model
-3. Renderer (Twig/MJML) generates HTML body
+3. Twig renderer generates HTML body
 4. CsvGenerator creates optional attachments
 5. Symfony Mailer sends email
 

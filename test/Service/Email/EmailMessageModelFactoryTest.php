@@ -10,15 +10,15 @@ use Atoolo\Form\Dto\UISchema\Layout;
 use Atoolo\Form\Dto\UISchema\Type;
 use Atoolo\Form\Service\Email\EmailMessageModelFactory;
 use Atoolo\Form\Service\FormDataModelFactory;
-use Atoolo\Form\Service\Platform;
 use Atoolo\Resource\DataBag;
 use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceTenant;
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Symfony\Component\Clock\MockClock;
 
 #[CoversClass(EmailMessageModelFactory::class)]
 class EmailMessageModelFactoryTest extends TestCase
@@ -40,12 +40,8 @@ class EmailMessageModelFactoryTest extends TestCase
             ->willReturn([
                 'dummy' => true,
             ]);
-        $platform = $this->createStub(Platform::class);
-        $dateTime = new DateTime();
-        $dateTime->setDate(23, 9, 2024);
-        $dateTime->setTime(9, 38, 20);
-        $platform->method('datetime')->willReturn($dateTime);
-        $factory = new EmailMessageModelFactory($channel, $formDataModelFactory, $platform);
+        $dateTime = new DateTimeImmutable('2024-09-23 09:38:20');
+        $factory = new EmailMessageModelFactory($channel, $formDataModelFactory, new MockClock($dateTime));
 
         $formDefinition = new FormDefinition(
             schema: [],

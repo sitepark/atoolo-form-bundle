@@ -9,9 +9,6 @@ namespace Atoolo\Form\Dto\UISchema;
  */
 class Layout extends Element
 {
-    /** @var array<Element> */
-    public array $elements;
-
     /**
      * @param Type $type
      * @param array<Element> $elements
@@ -20,11 +17,10 @@ class Layout extends Element
      */
     public function __construct(
         Type $type,
-        array $elements = [],
-        public string|bool|null $label = null,
-        public array $options = [],
+        public readonly array $elements = [],
+        public readonly string|bool|null $label = null,
+        public readonly array $options = [],
     ) {
         parent::__construct($type);
-        $this->elements = $elements;
     }
 }

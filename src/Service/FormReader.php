@@ -9,6 +9,11 @@ use Atoolo\Form\Dto\UISchema\Control;
 use Atoolo\Form\Dto\UISchema\Element;
 use Atoolo\Form\Dto\UISchema\Layout;
 
+/**
+ * Traverses the UI schema of a form definition depth first and passes each
+ * layout and control, resolved against the JSON schema and the form data,
+ * to a FormReaderHandler.
+ */
 class FormReader
 {
     /**
@@ -17,7 +22,7 @@ class FormReader
     public function __construct(
         public readonly FormDefinition $formDefinition,
         public readonly array $data,
-        public readonly FromReaderHandler $handler,
+        public readonly FormReaderHandler $handler,
     ) {}
 
     public function read(): void

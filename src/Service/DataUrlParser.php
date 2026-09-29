@@ -19,15 +19,19 @@ class DataUrlParser
         $parameterString = $matches[2];
 
         $parameters = [];
-        $base64Data = '';
+        $base64Data = null;
 
         foreach (explode(';', $parameterString) as $parameter) {
             if (str_starts_with($parameter, 'base64,')) {
                 $base64Data = substr($parameter, 7);
-            } else {
+            } elseif (str_contains($parameter, '=')) {
                 [$key, $value] = explode('=', $parameter, 2);
                 $parameters[$key] = urldecode($value);
             }
+        }
+
+        if ($base64Data === null) {
+            throw new DataUrlException('missing base64 data');
         }
 
         $binaryData = base64_decode($base64Data, true);

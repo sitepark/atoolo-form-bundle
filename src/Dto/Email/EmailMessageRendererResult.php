@@ -7,7 +7,7 @@ namespace Atoolo\Form\Dto\Email;
 /**
  * @codeCoverageIgnore
  */
-class EmailHtmlMessageRendererResult
+class EmailMessageRendererResult
 {
     /**
      * @param array<EmailMessageModelFileUpload> $attachments

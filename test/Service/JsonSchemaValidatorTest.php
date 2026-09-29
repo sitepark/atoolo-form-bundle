@@ -7,7 +7,6 @@ namespace Atoolo\Form\Test\Service;
 use Atoolo\Form\Service\JsonSchemaValidator;
 use Atoolo\Form\Service\JsonSchemaValidator\Constraint;
 use Atoolo\Form\Service\JsonSchemaValidator\FormatConstraint;
-use Atoolo\Form\Service\Platform;
 use LogicException;
 use Opis\JsonSchema\Errors\ValidationError;
 use Opis\JsonSchema\Info\SchemaInfo;
@@ -48,7 +47,6 @@ class JsonSchemaValidatorTest extends TestCase
         $this->jsonSchemaValidator = new JsonSchemaValidator(
             $this->validator,
             [$this->formatConstraint],
-            new Platform(),
         );
     }
 
@@ -61,7 +59,6 @@ class JsonSchemaValidatorTest extends TestCase
         new JsonSchemaValidator(
             $this->validator,
             [$this->createStub(Constraint::class)],
-            new Platform(),
         );
     }
 
@@ -77,7 +74,6 @@ class JsonSchemaValidatorTest extends TestCase
         new JsonSchemaValidator(
             $validator,
             [$this->createStub(FormatConstraint::class)],
-            new Platform(),
         );
     }
 
@@ -105,7 +101,6 @@ class JsonSchemaValidatorTest extends TestCase
         new JsonSchemaValidator(
             $this->validator,
             [$formatConstraint],
-            new Platform(),
         );
     }
 
@@ -128,7 +123,6 @@ class JsonSchemaValidatorTest extends TestCase
         new JsonSchemaValidator(
             $validator,
             [$formatConstraint],
-            new Platform(),
         );
 
         $callback = $formatResolver->resolve('test', 'string');
