@@ -52,4 +52,29 @@ class DataUrlParserTest extends TestCase
         $this->expectException(DataUrlException::class);
         $this->parser->parse($dataUrl);
     }
+
+    public function testParseIgnoresParameterWithoutValue(): void
+    {
+        $dataUrl = 'data:text/plain;flag;name=text.txt;base64,' . base64_encode('text');
+
+        $expected = new UploadFile(
+            filename: 'text.txt',
+            contentType: 'text/plain',
+            data: 'text',
+            size: 4,
+        );
+        $this->assertEquals(
+            $expected,
+            $this->parser->parse($dataUrl),
+            'parameters without a value should be ignored',
+        );
+    }
+
+    public function testParseWithMissingBase64Data(): void
+    {
+        $dataUrl = 'data:text/plain;name=text.txt';
+
+        $this->expectException(DataUrlException::class);
+        $this->parser->parse($dataUrl);
+    }
 }
