@@ -10,9 +10,7 @@ use Atoolo\Form\Dto\UISchema\Layout;
 use Atoolo\Form\Dto\UISchema\Type;
 use Atoolo\Form\Service\Email\EmailMessageModelFactory;
 use Atoolo\Form\Service\FormDataModelFactory;
-use Atoolo\Resource\DataBag;
 use Atoolo\Resource\ResourceChannel;
-use Atoolo\Resource\ResourceTenant;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
@@ -28,29 +26,12 @@ class EmailMessageModelFactoryTest extends TestCase
      */
     public function testCreate(): void
     {
-        $tenant = new ResourceTenant(
-            '',
-            'Test Tenant',
-            '',
-            '',
-            new DataBag([]),
-        );
-        $channel = new ResourceChannel(
-            '',
-            '',
-            '',
-            'test.example.com',
-            false,
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            [],
-            new DataBag([]),
-            $tenant,
-        );
+        $channel = ResourceChannel::create([
+            'serverName' => 'test.example.com',
+            'tenant' => [
+                'name' => 'Test Tenant',
+            ],
+        ]);
 
         $formDataModelFactory = $this->createStub(FormDataModelFactory::class);
         $formDataModelFactory->method('create')

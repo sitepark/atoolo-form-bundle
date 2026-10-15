@@ -12,9 +12,7 @@ use Atoolo\Form\Exception\FormNotFoundException;
 use Atoolo\Form\Exception\InvalidFormConfiguration;
 use Atoolo\Form\Service\FormDefinitionLoader;
 use Atoolo\Form\Service\LabelTranslator;
-use Atoolo\Resource\DataBag;
 use Atoolo\Resource\Resource;
-use Atoolo\Resource\ResourceLanguage;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -303,13 +301,10 @@ class FormDefinitionLoaderTest extends TestCase
 
     private function setContentForResourceLoaderStub(array $content): void
     {
-        $this->resourceLoader->method('load')->willReturn(new Resource(
-            '/test',
-            '',
-            '',
-            '',
-            ResourceLanguage::of('en'),
-            new DataBag(['content' => $content]),
-        ));
+        $this->resourceLoader->method('load')->willReturn(Resource::create([
+            'url' => '/test',
+            'locale' => 'en_US',
+            'content' => $content,
+        ]));
     }
 }

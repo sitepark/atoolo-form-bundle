@@ -11,12 +11,10 @@ use Atoolo\Form\Dto\UISchema\Type;
 use Atoolo\Form\Exception\FormNotFoundException;
 use Atoolo\Form\Service\FormDefinitionLoader;
 use Atoolo\Form\Service\SubmitHandler;
-use Atoolo\Resource\DataBag;
 use Atoolo\Resource\Exception\ResourceNotFoundException;
 use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceLanguage;
 use Atoolo\Resource\ResourceLocation;
-use Atoolo\Resource\ResourceTenant;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -55,7 +53,9 @@ class FormControllerTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->channel = $this->createResourceChannel('de_DE', []);
+        $this->channel = ResourceChannel::create([
+            'locale' => 'de_DE',
+        ]);
         $this->formDefinitionLoader = $this->createMock(FormDefinitionLoader::class);
         $this->submitHandler = $this->createMock(SubmitHandler::class);
         $this->localeSwitcher = $this->createMock(LocaleSwitcher::class);
@@ -88,7 +88,10 @@ class FormControllerTest extends TestCase
         string $locationLang,
         string $locationPath,
     ): void {
-        $this->channel = $this->createResourceChannel($defaultLang, $translationLocales);
+        $this->channel = ResourceChannel::create([
+            'locale' => $defaultLang,
+            'translationLocales' => $translationLocales,
+        ]);
         $this->formDefinitionLoader->expects($this->once())
             ->method('loadFromResource')
             ->with(
@@ -275,29 +278,6 @@ class FormControllerTest extends TestCase
             'location',
             'form-1',
             $request,
-        );
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function createResourceChannel(string $locale, array $translationLocales): ResourceChannel
-    {
-        return new ResourceChannel(
-            '',
-            '',
-            '',
-            '',
-            false,
-            '',
-            $locale,
-            '',
-            '',
-            '',
-            '',
-            $translationLocales,
-            new DataBag([]),
-            $this->createStub(ResourceTenant::class),
         );
     }
 }
